@@ -12,3 +12,17 @@ C:\Users\toxev\OneDrive\Desktop\ASE Assignment C3624738\C3624738\obj\Debug\net7.
 C:\Users\toxev\OneDrive\Desktop\ASE Assignment C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.pdb
 C:\Users\toxev\OneDrive\Desktop\ASE Assignment C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.genruntimeconfig.cache
 C:\Users\toxev\OneDrive\Desktop\ASE Assignment C3624738\C3624738\obj\Debug\net7.0-windows\ref\C3624738.dll
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\bin\Debug\net7.0-windows\C3624738.exe
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\bin\Debug\net7.0-windows\C3624738.deps.json
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\bin\Debug\net7.0-windows\C3624738.runtimeconfig.json
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\bin\Debug\net7.0-windows\C3624738.dll
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\bin\Debug\net7.0-windows\C3624738.pdb
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.AssemblyInfoInputs.cache
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.AssemblyInfo.cs
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.csproj.CoreCompileInputs.cache
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.dll
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\refint\C3624738.dll
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.pdb
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.genruntimeconfig.cache
+C:\Users\toxev\OneDrive\Documents\GitHub\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\ref\C3624738.dll
