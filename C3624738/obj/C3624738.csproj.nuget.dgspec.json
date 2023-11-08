@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\toxev\\OneDrive\\Desktop\\ASE Assignment C3624738\\C3624738\\C3624738.csproj": {}
+    "C:\\Users\\toxev\\OneDrive\\Documents\\GitHub\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj": {}
   },
   "projects": {
-    "C:\\Users\\toxev\\OneDrive\\Desktop\\ASE Assignment C3624738\\C3624738\\C3624738.csproj": {
+    "C:\\Users\\toxev\\OneDrive\\Documents\\GitHub\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\toxev\\OneDrive\\Desktop\\ASE Assignment C3624738\\C3624738\\C3624738.csproj",
+        "projectUniqueName": "C:\\Users\\toxev\\OneDrive\\Documents\\GitHub\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj",
         "projectName": "C3624738",
-        "projectPath": "C:\\Users\\toxev\\OneDrive\\Desktop\\ASE Assignment C3624738\\C3624738\\C3624738.csproj",
+        "projectPath": "C:\\Users\\toxev\\OneDrive\\Documents\\GitHub\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj",
         "packagesPath": "C:\\Users\\toxev\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\toxev\\OneDrive\\Desktop\\ASE Assignment C3624738\\C3624738\\obj\\",
+        "outputPath": "C:\\Users\\toxev\\OneDrive\\Documents\\GitHub\\ASE-Assignment-C3624738\\C3624738\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\toxev\\AppData\\Roaming\\NuGet\\NuGet.Config"
