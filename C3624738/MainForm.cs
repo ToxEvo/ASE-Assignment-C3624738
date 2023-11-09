@@ -6,12 +6,6 @@ namespace C3624738
         public MainForm()
         {
             InitializeComponent();
-            InitializeCustomControls();
-        }
-
-        private void InitializeCustomControls()
-        {
-            
         }
 
         private void RunButton_Click(object? sender, EventArgs e)

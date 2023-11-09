@@ -50,8 +50,8 @@ partial class MainForm
 
         programTextBox = new TextBox
         {
-            Location = new Point(10, 60),
-            Size = new Size(200, 400),
+            Location = new Point(10, 100),
+            Size = new Size(200, 150),
             Multiline = true,
             ScrollBars = ScrollBars.Vertical
         };
@@ -60,7 +60,7 @@ partial class MainForm
         drawingPanel = new Panel
         {
             Location = new Point(220, 10),
-            Size = new Size(300, 300),
+            Size = new Size(370, 275),
             BorderStyle = BorderStyle.FixedSingle 
         };
         this.Controls.Add(drawingPanel);
@@ -68,7 +68,7 @@ partial class MainForm
         runButton = new Button
         {
             Text = "Run",
-            Location = new Point(220, 10),
+            Location = new Point(10, 55),
             Size = new Size(80, 40)
         };
 
@@ -78,7 +78,7 @@ partial class MainForm
         syntaxCheckButton = new Button
         {
             Text = "Syntax",
-            Location = new Point(310, 10),
+            Location = new Point(110, 55),
             Size = new Size(80, 40)
         };
 
