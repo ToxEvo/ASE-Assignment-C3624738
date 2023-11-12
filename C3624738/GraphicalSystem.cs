@@ -6,16 +6,20 @@ namespace C3624738
         public (int, int, int, int) GetColor();
         public void SetWidth(float width);
         public float GetWidth();
+        public void Circle(int x, int y, int radius);
     }
 
     class Graphical : IGraphical
     {
         (int, int, int, int) penColor;
         private Pen pen;
+        protected List<Shape> shapes;
 
         public Graphical()
         {
             pen = new Pen(Color.Black, 3);
+
+            shapes = new List<Shape>();
         }
 
         ~Graphical()
@@ -26,7 +30,10 @@ namespace C3624738
         public void GraphicalGen(object sender, PaintEventArgs pea)
         {
             Graphics g = pea.Graphics;
-            g.DrawLine(pen, 0, 0, 100, 100);
+            foreach (Shape shape in shapes)
+            {
+                shape.Paint(g);
+            }
         }
 
         public void SetColor((int, int, int, int) color)
@@ -48,6 +55,12 @@ namespace C3624738
         public float GetWidth()
         {
             return pen.Width;
+        }
+
+        public void Circle(int x, int y, int radius)
+        {
+            Circle circle = new Circle(pen.Color, x, y, pen.Width, radius);
+            shapes.Add(circle);
         }
     }
 }
