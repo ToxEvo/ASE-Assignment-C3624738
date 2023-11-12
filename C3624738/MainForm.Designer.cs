@@ -10,7 +10,7 @@ partial class MainForm
     private TextBox programTextBox;
     private Button runButton;
     private Button syntaxCheckButton;
-    private PictureBox pictureBox;
+    private PictureBox graphicsBox;
 
 
     /// <summary>
@@ -34,11 +34,6 @@ partial class MainForm
     /// </summary>
     private void InitializeComponent()
     {
-        this.components = new System.ComponentModel.Container();
-        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(800, 450);
-        this.Text = "Form1";
-
         commandTextBox = new TextBox
         {
             Location = new Point(10, 10),
@@ -57,13 +52,13 @@ partial class MainForm
         };
         this.Controls.Add(programTextBox);
 
-        pictureBox = new PictureBox
+        graphicsBox = new PictureBox
         {
             Location = new Point(220, 10),
             Size = new Size(370, 275),
             BorderStyle = BorderStyle.FixedSingle 
         };
-        this.Controls.Add(pictureBox);
+        this.Controls.Add(graphicsBox);
 
         runButton = new Button
         {
@@ -72,7 +67,7 @@ partial class MainForm
             Size = new Size(80, 40)
         };
 
-        runButton.Click += RunButton_Click;
+        runButton.Click += RunButtonClick;
         Controls.Add(runButton);
 
         syntaxCheckButton = new Button
@@ -82,7 +77,7 @@ partial class MainForm
             Size = new Size(80, 40)
         };
 
-        syntaxCheckButton.Click += SyntaxCheckButton_Click;
+        syntaxCheckButton.Click += SyntaxCheckButtonClick;
         Controls.Add(syntaxCheckButton);
 
         AutoScaleDimensions = new SizeF(6F, 13F);

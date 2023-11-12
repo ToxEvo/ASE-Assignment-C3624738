@@ -7,14 +7,19 @@ namespace C3624738
 
         }
 
-        public void ParseLine(string line)
+        public void ParseCommand(string line)
         {
             
         }
 
-        public void ExampleGraphics(Object sender, System.Windows.Forms.PaintEventArgs gp)
+        public void CommandSyntaxCheck(string syntax)
         {
-            System.Drawing.Graphics g = gp.Graphics;
+
+        }
+
+        public void ExampleGraphics(Object sender, PaintEventArgs gp)
+        {
+            Graphics g = gp.Graphics;
             Pen pen = new Pen(Color.Black, 3);
             g.DrawLine(pen, 0, 0, 123, 123);
             pen.Dispose();

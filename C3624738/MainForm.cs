@@ -7,18 +7,18 @@ namespace C3624738
         {
             parser = new CommandParser();
             InitializeComponent();
-            pictureBox.BackColor = Color.Gray;
-            pictureBox.Paint += new System.Windows.Forms.PaintEventHandler(parser.ExampleGraphics);
+            graphicsBox.BackColor = Color.Gray;
+            graphicsBox.Paint += new PaintEventHandler(parser.ExampleGraphics);
         }
 
-        private void RunButton_Click(object sender, EventArgs e)
+        private void RunButtonClick(object sender, EventArgs e)
         {
-            // Placeholder for run button logic
+            parser.ParseCommand(commandTextBox.Text);
         }
 
-        private void SyntaxCheckButton_Click(object sender, EventArgs e)
+        private void SyntaxCheckButtonClick(object sender, EventArgs e)
         {
-            // Placeholder for syntax check button logic 
+            parser.CommandSyntaxCheck(programTextBox.Text);
         }
 
     }
