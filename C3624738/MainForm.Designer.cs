@@ -10,7 +10,7 @@ partial class MainForm
     private TextBox programTextBox;
     private Button runButton;
     private Button syntaxCheckButton;
-    private Panel drawingPanel;
+    private PictureBox pictureBox;
 
 
     /// <summary>
@@ -57,13 +57,13 @@ partial class MainForm
         };
         this.Controls.Add(programTextBox);
 
-        drawingPanel = new Panel
+        pictureBox = new PictureBox
         {
             Location = new Point(220, 10),
             Size = new Size(370, 275),
             BorderStyle = BorderStyle.FixedSingle 
         };
-        this.Controls.Add(drawingPanel);
+        this.Controls.Add(pictureBox);
 
         runButton = new Button
         {
