@@ -20,6 +20,5 @@ namespace C3624738
         {
             parser.CommandSyntaxCheck(programTextBox.Text);
         }
-
     }
 }
