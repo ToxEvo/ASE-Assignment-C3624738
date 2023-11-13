@@ -15,9 +15,7 @@ namespace C3624738
         public void SetFill(bool fill);
         public (int, int) GetCoords();
         void SetCoords(int x, int y);
-        public void MoveTo (int x, int y);
-        public void Reset();
-        
+        public void MoveTo (int x, int y);        
     }
 
     class Graphical : IGraphical
@@ -41,7 +39,7 @@ namespace C3624738
             pen.Dispose();
         }
 
-        public void GraphicalGen(object sender, PaintEventArgs pea)
+        public void GraphicalGen(object? sender, PaintEventArgs pea)
         {
             Graphics g = pea.Graphics;
             foreach (Shape shape in shapes)
@@ -104,11 +102,6 @@ namespace C3624738
         public void MoveTo(int x, int y)
         {
             penCoords = (x, y);
-        }
-
-        public void Reset()
-        {
-            SetCoords(0, 0);
         }
 
         public void Rectangle(int x, int y, int width, int height)
