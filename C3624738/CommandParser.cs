@@ -30,10 +30,6 @@ namespace C3624738
         }
         public void ParseCommand(string command)
         {
-            // Declaration of x and y with default values.
-            int x = 100; // Default X coordinate.
-            int y = 100; // Default Y coordinate
-
             command = command.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
             string[] commands = command.Split(' ');
 
@@ -46,8 +42,25 @@ namespace C3624738
                 case "circle":
                     if (commands.Length > 1 && int.TryParse(commands[1], out int radius))
                     {
-                        graphicsGen.Circle(x, y, radius);
-                    } 
+                        // Assume x and y coordinates are obtained from the graphicsGen object.
+                        (int, int) coords = graphicsGen.GetCoords();
+                        graphicsGen.Circle(coords.Item1, coords.Item2, radius);
+                    }
+                    break;
+                case "rectangle":
+                    // Expecting command to be in the format "rectangle width height"
+                    if (commands.Length == 3 
+                        && int.TryParse(commands[1], out int width) 
+                        && int.TryParse(commands[2], out int height))
+                    {
+                        // Assume x and y coordinates are obtained from the graphicsGen object.
+                        (int, int) coords = graphicsGen.GetCoords();
+                        graphicsGen.Rectangle(coords.Item1, coords.Item2, width, height);
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid rectangle command format. Expected format: 'rectangle width height'");
+                    }
                     break;
                 case "clear":
                     if (commands.Length == 1)
@@ -58,14 +71,7 @@ namespace C3624738
                 case "fill":
                     if(commands.Length == 2) 
                     {
-                        if (commands[1] == "on")
-                        {
-                            graphicsGen.SetFill(true);
-                        }
-                        else if (commands[1] == "off")
-                        {
-                            graphicsGen.SetFill(false);
-                        }
+                        graphicsGen.SetFill(commands[1].Equals("on", StringComparison.OrdinalIgnoreCase));
                     }
                     break;
                 default:

@@ -9,6 +9,7 @@ namespace C3624738
         public void SetWidth(float width);
         public float GetWidth();
         public void Circle(int x, int y, int radius);
+        public void Rectangle(int x, int y, int width, int height);
         public void Clear();
         public bool GetFill();
         public void SetFill(bool fill);
@@ -96,6 +97,13 @@ namespace C3624738
         public void SetCoords(int x, int y)
         {
             penCoords = (x, y);
+        }
+
+        public void Rectangle(int x, int y, int width, int height)
+        {
+            // Create a new Rectangle instance and add it to the shapes list.
+            Rectangle rect = new Rectangle(pen.Color, x, y, pen.Width, fill, width, height);
+            shapes.Add(rect);
         }
     }
 }
