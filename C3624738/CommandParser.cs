@@ -40,10 +40,16 @@ namespace C3624738
                     graphicsGen.SetColor(color);
                     break;
                 case "circle":
-                    if (Int32.TryParse(commands[1], out int x) && Int32.TryParse(commands[2], out int y)
-                        && Int32.TryParse(commands[3], out int radius))
+                    if (int.TryParse(commands[1], out int x) && int.TryParse(commands[2], out int y)
+                        && int.TryParse(commands[3], out int radius))
                     {
                         graphicsGen.Circle(x, y, radius);
+                    }
+                    break;
+                case "clear":
+                    if (commands.Length == 1)
+                    {
+                        graphicsGen.Clear();
                     }
                     break;
                 default:

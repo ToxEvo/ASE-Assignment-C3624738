@@ -7,6 +7,7 @@ namespace C3624738
         public void SetWidth(float width);
         public float GetWidth();
         public void Circle(int x, int y, int radius);
+        public void Clear();
     }
 
     class Graphical : IGraphical
@@ -61,6 +62,11 @@ namespace C3624738
         {
             Circle circle = new Circle(pen.Color, x, y, pen.Width, radius);
             shapes.Add(circle);
+        }
+
+        public void Clear()
+        {
+            shapes.Clear();
         }
     }
 }
