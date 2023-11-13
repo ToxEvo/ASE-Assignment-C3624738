@@ -97,6 +97,7 @@ namespace C3624738
             {
                 ParseCommand(line);
             }
+            graphicsBox.Refresh();
         }
 
         public void ParseMultiple(string syntax)

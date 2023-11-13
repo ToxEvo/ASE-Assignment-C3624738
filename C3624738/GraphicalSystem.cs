@@ -21,7 +21,7 @@ namespace C3624738
         private Pen pen;
         protected List<Shape> shapes;
         protected bool fill;
-        protected int x, y;
+        protected (int x, int y) penCoords;
 
         public Graphical()
         {
@@ -29,8 +29,7 @@ namespace C3624738
 
             shapes = new List<Shape>();
             fill = false;
-            x = 0;
-            y = 0;
+            penCoords = (0, 0);
         }
 
         ~Graphical()
@@ -91,13 +90,12 @@ namespace C3624738
 
         public (int, int) GetCoords()
         {
-            return(x, y);
+            return penCoords;
         }
 
         public void SetCoords(int x, int y)
         {
-            this.x = x;
-            this.y = y;
+            penCoords = (x, y);
         }
     }
 }
