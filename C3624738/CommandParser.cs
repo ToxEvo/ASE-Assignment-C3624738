@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace C3624738
 {
+    public class CommandsLoadedEventArgs : EventArgs
+    {
+        public string[] Commands { get; set; }
+    }
     class CommandParser 
     {
         private readonly IGraphical graphicsGen;
@@ -40,12 +44,17 @@ namespace C3624738
 
         public void ParseCommand(string command)
         {
-            if (!command.Trim().ToLower().StartsWith("save"))
+            // Trim and convert command to lowercase for checking against 'save' and 'load'
+            string trimmedCommand = command.Trim().ToLower();
+
+            // Avoid adding 'save' and 'load' commands to history to prevent recursion or redundant saving/loading
+            if (!(trimmedCommand.StartsWith("save") || trimmedCommand.StartsWith("load")))
             {
-                commandHistory.Add(command);
+                commandHistory.Add(command); // Add original command, not the trimmed/lowercase version
             }
 
-            var commands = command.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            // Split the command into parts
+            var commands = trimmedCommand.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             switch (commands[0].ToLower())
             {
@@ -72,6 +81,9 @@ namespace C3624738
                     break;
                 case "save":
                     ExecuteSaveCommand(commands);
+                    break;
+                case "load":
+                    ExecuteLoadCommand(commands);
                     break;
                 default:
                     throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
@@ -158,6 +170,30 @@ namespace C3624738
 
             string path = Path.Combine(commands[1], commands[2]);
             File.WriteAllLines(path, commandHistory);
+        }
+
+        private void ExecuteLoadCommand(string[] commands)
+        {
+            // Command format: "load filepath filename"
+            if (commands.Length != 3)
+                throw new ArgumentException("Invalid parameters for 'load' command.");
+
+            string fullPath = Path.Combine(commands[1], commands[2]);
+            if (!File.Exists(fullPath))
+                throw new FileNotFoundException($"The file at '{fullPath}' was not found.");
+
+            // Read all commands from the file and execute them except 'load' and 'save'
+            string[] loadedCommands = File.ReadAllLines(fullPath);
+            foreach (string loadedCommand in loadedCommands)
+            {
+                string trimmedCommand = loadedCommand.Trim().ToLower();
+                // Skip 'load' and 'save' commands to prevent recursion and redundant saving
+                if (trimmedCommand.StartsWith("load") || trimmedCommand.StartsWith("save"))
+                    continue;
+
+                // Parse and execute the command
+                ParseCommand(loadedCommand);
+            }
         }
 
         private void ExecuteResetCommand()
