@@ -63,6 +63,9 @@ namespace C3624738
                 case "reset":
                     ExecuteResetCommand();
                     break;
+                case "draw":
+                    ExecuteDrawCommand(commands);
+                    break;
                 default:
                     throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
             }
@@ -116,6 +119,20 @@ namespace C3624738
                 !int.TryParse(commands[3], out int posY))
                 throw new ArgumentException("Invalid parameters for 'position pen' command.");
             graphicsGen.SetCoords(posX, posY);
+        }
+
+        private void ExecuteDrawCommand(string[] commands)
+        {
+            // Expecting command format: "pen draw x y"
+            if (commands.Length == 4 && commands[1].ToLower() == "draw" &&
+                int.TryParse(commands[2], out int x) && int.TryParse(commands[3], out int y))
+            {
+                graphicsGen.DrawTo(x, y);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid parameters for 'pen draw' command.");
+            }
         }
 
         private void ExecuteResetCommand()

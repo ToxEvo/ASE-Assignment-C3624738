@@ -17,6 +17,7 @@ namespace C3624738
         public (int, int) GetCoords();
         void SetCoords(int x, int y);
         public void MoveTo (int x, int y);        
+        public void DrawTo(int x, int y);
     }
 
     class Graphical : IGraphical
