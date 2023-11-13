@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace C3624738
 {
     interface IGraphical
@@ -10,6 +12,8 @@ namespace C3624738
         public void Clear();
         public bool GetFill();
         public void SetFill(bool fill);
+        public (int, int) GetCoords();
+        public void SetCoords(int x, int y);
     }
 
     class Graphical : IGraphical
@@ -17,6 +21,7 @@ namespace C3624738
         private Pen pen;
         protected List<Shape> shapes;
         protected bool fill;
+        protected int x, y;
 
         public Graphical()
         {
@@ -24,6 +29,8 @@ namespace C3624738
 
             shapes = new List<Shape>();
             fill = false;
+            x = 0;
+            y = 0;
         }
 
         ~Graphical()
@@ -67,6 +74,12 @@ namespace C3624738
             shapes.Add(circle);
         }
 
+        public void Circle(int radius)
+        {
+            Circle circle = new Circle(pen.Color, x, y, pen.Width, fill, radius);
+            shapes.Add(circle);
+        }
+
         public void Clear()
         {
             shapes.Clear();
@@ -82,5 +95,15 @@ namespace C3624738
             this.fill = fill;
         }
 
+        public (int, int) GetCoords()
+        {
+            return(x, y);
+        }
+
+        public void SetCoords(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
     }
 }

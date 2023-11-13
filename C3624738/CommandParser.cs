@@ -33,7 +33,7 @@ namespace C3624738
             command = command.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
             string[] commands = command.Split(' ');
 
-            switch (commands[0])
+            switch (commands[0].ToLower())
             {
                 case "pen":
                     (int, int, int, int) color = FindColor(commands[1]);
@@ -63,6 +63,23 @@ namespace C3624738
                         {
                             graphicsGen.SetFill(false);
                         }
+                    }
+                    break;
+                case "position":
+                    if (commands.Length == 4 && commands[1] == "pen")
+                    {
+                        if (int.TryParse(commands[2], out x) && int.TryParse(commands[3], out y))
+                        {
+                            graphicsGen.SetCoords(x, y);
+                        }
+                        else
+                        {
+                            throw new Exception("Position is not a number");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid command");
                     }
                     break;
                 default:
