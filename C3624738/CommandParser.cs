@@ -1,4 +1,3 @@
-
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -11,6 +10,8 @@ namespace C3624738
         private readonly IGraphical graphicsGen;
         private readonly PictureBox graphicsBox;
         private readonly Dictionary<string, (int, int, int, int)> colors;
+        private List<string> commandHistory = new List<string>();
+
 
         public CommandParser(IGraphical graphicsGen, PictureBox graphicsBox)
         {
@@ -39,6 +40,11 @@ namespace C3624738
 
         public void ParseCommand(string command)
         {
+            if (!command.Trim().ToLower().StartsWith("save"))
+            {
+                commandHistory.Add(command);
+            }
+
             var commands = command.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             switch (commands[0].ToLower())
@@ -63,6 +69,9 @@ namespace C3624738
                     break;
                 case "reset":
                     ExecuteResetCommand();
+                    break;
+                case "save":
+                    ExecuteSaveCommand(commands);
                     break;
                 default:
                     throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
@@ -139,6 +148,16 @@ namespace C3624738
                 !int.TryParse(commands[3], out int posY))
                 throw new ArgumentException("Invalid parameters for 'position pen' command.");
             graphicsGen.SetCoords(posX, posY);
+        }
+
+        private void ExecuteSaveCommand(string[] commands)
+        {
+            // Expecting command format: "save filepath filename"
+            if (commands.Length != 3)
+                throw new ArgumentException("Invalid parameters for 'save' command.");
+
+            string path = Path.Combine(commands[1], commands[2]);
+            File.WriteAllLines(path, commandHistory);
         }
 
         private void ExecuteResetCommand()
