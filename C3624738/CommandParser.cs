@@ -30,6 +30,10 @@ namespace C3624738
         }
         public void ParseCommand(string command)
         {
+            // Declaration of x and y with default values.
+            int x = 100; // Default X coordinate.
+            int y = 100; // Default Y coordinate
+
             command = command.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
             string[] commands = command.Split(' ');
 
@@ -40,11 +44,10 @@ namespace C3624738
                     graphicsGen.SetColor(color);
                     break;
                 case "circle":
-                    if (int.TryParse(commands[1], out int x) && int.TryParse(commands[2], out int y)
-                        && int.TryParse(commands[3], out int radius))
+                    if (commands.Length > 1 && int.TryParse(commands[1], out int radius))
                     {
                         graphicsGen.Circle(x, y, radius);
-                    }
+                    } 
                     break;
                 case "clear":
                     if (commands.Length == 1)
@@ -63,23 +66,6 @@ namespace C3624738
                         {
                             graphicsGen.SetFill(false);
                         }
-                    }
-                    break;
-                case "position":
-                    if (commands.Length == 4 && commands[1] == "pen")
-                    {
-                        if (int.TryParse(commands[2], out x) && int.TryParse(commands[3], out y))
-                        {
-                            graphicsGen.SetCoords(x, y);
-                        }
-                        else
-                        {
-                            throw new Exception("Position is not a number");
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid command");
                     }
                     break;
                 default:

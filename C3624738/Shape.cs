@@ -11,14 +11,8 @@ namespace C3624738
             this.x = x;
             this.y = y;
             this.fill = fill;
-            if (fill)
-            {
-                solid = new SolidBrush(color);
-            }
-            else 
-            {
-                pen = new Pen(color, width);
-            }
+            solid = new SolidBrush(color);
+            pen = new Pen(color, width);
             
         }
         ~Shape()
