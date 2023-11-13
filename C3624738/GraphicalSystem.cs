@@ -12,7 +12,6 @@ namespace C3624738
 
     class Graphical : IGraphical
     {
-        (int, int, int, int) penColor;
         private Pen pen;
         protected List<Shape> shapes;
 
