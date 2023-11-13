@@ -1,4 +1,5 @@
 using System.Security.Cryptography.X509Certificates;
+using System.Drawing;
 
 namespace C3624738
 {
@@ -108,6 +109,14 @@ namespace C3624738
         {
             Rectangle rect = new Rectangle(pen.Color, x, y, pen.Width, fill, width, height);
             shapes.Add(rect);
+        }
+
+        public void DrawTo(int x, int y)
+        {
+            // Draw a line from current penCoords to the new coordinates
+            Line line = new Line(pen.Color, penCoords.x, penCoords.y, x, y, pen.Width);
+            shapes.Add(line);
+            MoveTo(x, y); // Update current pen position
         }
     }
 }

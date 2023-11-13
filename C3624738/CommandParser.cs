@@ -61,7 +61,7 @@ namespace C3624738
                     ExecutePositionCommand(commands);
                     break;
                 case "reset":
-                    Reset();
+                    ExecuteResetCommand();
                     break;
                 default:
                     throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
@@ -118,6 +118,11 @@ namespace C3624738
             graphicsGen.SetCoords(posX, posY);
         }
 
+        private void ExecuteResetCommand()
+        {
+            graphicsGen.SetCoords(0, 0);
+        }
+
         public void ParseHandler(string line, string syntax)
         {
             if (line == "run")
@@ -139,10 +144,6 @@ namespace C3624738
                 ParseCommand(line.Trim());
             }
             graphicsBox.Refresh();
-        }
-        private void Reset()
-        {
-            graphicsGen.SetCoords(0, 0);
         }
     }
 }
