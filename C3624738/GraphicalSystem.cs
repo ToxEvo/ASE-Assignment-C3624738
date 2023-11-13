@@ -74,12 +74,6 @@ namespace C3624738
             shapes.Add(circle);
         }
 
-        public void Circle(int radius)
-        {
-            Circle circle = new Circle(pen.Color, x, y, pen.Width, fill, radius);
-            shapes.Add(circle);
-        }
-
         public void Clear()
         {
             shapes.Clear();

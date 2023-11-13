@@ -68,7 +68,7 @@ namespace C3624738
                 case "position":
                     if (commands.Length == 4 && commands[1] == "pen")
                     {
-                        if (int.TryParse(commands[2], out x) && int.TryParse(commands[3], out y))
+                        if (int.TryParse(commands[2], out x) && int.TryParse(commands[3],out y))
                         {
                             graphicsGen.SetCoords(x, y);
                         }
