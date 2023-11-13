@@ -60,6 +60,9 @@ namespace C3624738
                 case "position":
                     ExecutePositionCommand(commands);
                     break;
+                case "reset":
+                    Reset();
+                    break;
                 default:
                     throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
             }
@@ -136,6 +139,10 @@ namespace C3624738
                 ParseCommand(line.Trim());
             }
             graphicsBox.Refresh();
+        }
+        private void Reset()
+        {
+            graphicsGen.SetCoords(0, 0);
         }
     }
 }

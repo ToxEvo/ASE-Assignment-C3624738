@@ -16,6 +16,7 @@ namespace C3624738
         public (int, int) GetCoords();
         void SetCoords(int x, int y);
         public void MoveTo (int x, int y);
+        public void Reset();
         
     }
 
@@ -103,6 +104,11 @@ namespace C3624738
         public void MoveTo(int x, int y)
         {
             penCoords = (x, y);
+        }
+
+        public void Reset()
+        {
+            SetCoords(0, 0);
         }
 
         public void Rectangle(int x, int y, int width, int height)
