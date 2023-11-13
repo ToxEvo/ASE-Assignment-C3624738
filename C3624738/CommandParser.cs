@@ -1,92 +1,118 @@
+
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Collections.Generic;
+
 namespace C3624738
 {
     class CommandParser 
     {
-        IGraphical graphicsGen;
-        protected PictureBox graphicsBox;
-        Dictionary<string, (int, int, int, int)> colors = new Dictionary<string, (int, int, int, int)>();
+        private readonly IGraphical graphicsGen;
+        private readonly PictureBox graphicsBox;
+        private readonly Dictionary<string, (int, int, int, int)> colors;
 
         public CommandParser(IGraphical graphicsGen, PictureBox graphicsBox)
         {
-            this.graphicsGen = graphicsGen;
-            this.graphicsBox = graphicsBox;
-            colors.Add("red", (255, 255, 0, 0));
-            colors.Add("green", (255, 0, 255, 0));
-            colors.Add("blue", (255, 0, 0, 255));
-            colors.Add("black", (255, 255, 255, 255));
+            this.graphicsGen = graphicsGen ?? throw new ArgumentNullException(nameof(graphicsGen));
+            this.graphicsBox = graphicsBox ?? throw new ArgumentNullException(nameof(graphicsBox));
+            
+            colors = new Dictionary<string, (int, int, int, int)>
+            {
+                {"red", (255, 0, 0, 255)},
+                {"green", (0, 255, 0, 255)},
+                {"blue", (0, 0, 255, 255)},
+                {"black", (0, 0, 0, 255)}
+            };
         }
 
         private (int, int, int, int) FindColor(string color)
         {
-            string readableColor = color.ToLower();
-            if (colors.ContainsKey(readableColor))
+            var readableColor = color.ToLower();
+            if (colors.TryGetValue(readableColor, out var colorTuple))
             {
-                return colors[readableColor];
+                return colorTuple;
             }
-            else 
-            {
-                throw new Exception();
-            }
+            throw new ArgumentException($"The color '{color}' is not defined.");
         }
+
         public void ParseCommand(string command)
         {
-            command = command.Replace("\r\n", "").Replace("\r", "").Replace("\n", "");
-            string[] commands = command.Split(' ');
+            var commands = command.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             switch (commands[0].ToLower())
             {
                 case "pen":
-                    (int, int, int, int) color = FindColor(commands[1]);
-                    graphicsGen.SetColor(color);
+                    ExecutePenCommand(commands);
                     break;
                 case "circle":
-                    if (commands.Length > 1 && int.TryParse(commands[1], out int radius))
-                    {
-                        // Assume x and y coordinates are obtained from the graphicsGen object.
-                        (int, int) coords = graphicsGen.GetCoords();
-                        graphicsGen.Circle(coords.Item1, coords.Item2, radius);
-                    }
+                    ExecuteCircleCommand(commands);
                     break;
                 case "rectangle":
-                    // Expecting command to be in the format "rectangle width height"
-                    if (commands.Length == 3 
-                        && int.TryParse(commands[1], out int width) 
-                        && int.TryParse(commands[2], out int height))
-                    {
-                        // Assume x and y coordinates are obtained from the graphicsGen object.
-                        (int, int) coords = graphicsGen.GetCoords();
-                        graphicsGen.Rectangle(coords.Item1, coords.Item2, width, height);
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid rectangle command format. Expected format: 'rectangle width height'");
-                    }
+                    ExecuteRectangleCommand(commands);
                     break;
                 case "clear":
-                    if (commands.Length == 1)
-                    {
-                        graphicsGen.Clear();
-                    }
+                    ExecuteClearCommand(commands);
                     break;
                 case "fill":
-                    if(commands.Length == 2) 
-                    {
-                        graphicsGen.SetFill(commands[1].Equals("on", StringComparison.OrdinalIgnoreCase));
-                    }
+                    ExecuteFillCommand(commands);
                     break;
-                     case "moveto":
-                    if (commands.Length == 3 && int.TryParse(commands[1], out int moveToX) && int.TryParse(commands[2], out int moveToY))
-                    {
-                        graphicsGen.SetCoords(moveToX, moveToY);
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid moveto command format. Expected format: 'moveto x y'");
-                    }
+                case "position":
+                    ExecutePositionCommand(commands);
                     break;
                 default:
-                    throw new Exception("Invalid command");
+                    throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
             }
+        }
+
+        private void ExecutePenCommand(string[] commands)
+        {
+            if (commands.Length < 2)
+                throw new ArgumentException("Not enough parameters for 'pen' command.");
+            var color = FindColor(commands[1]);
+            graphicsGen.SetColor(color);
+        }
+
+        private void ExecuteCircleCommand(string[] commands)
+        {
+            if (commands.Length < 2 || !int.TryParse(commands[1], out int radius))
+                throw new ArgumentException("Invalid parameters for 'circle' command.");
+            var coords = graphicsGen.GetCoords();
+            graphicsGen.Circle(coords.Item1, coords.Item2, radius);
+        }
+
+        private void ExecuteRectangleCommand(string[] commands)
+        {
+            if (commands.Length < 3 || 
+                !int.TryParse(commands[1], out int width) || 
+                !int.TryParse(commands[2], out int height))
+                throw new ArgumentException("Invalid parameters for 'rectangle' command.");
+            var coords = graphicsGen.GetCoords();
+            graphicsGen.Rectangle(coords.Item1, coords.Item2, width, height);
+        }
+
+        private void ExecuteClearCommand(string[] commands)
+        {
+            if (commands.Length > 1)
+                throw new ArgumentException("Too many parameters for 'clear' command.");
+            graphicsGen.Clear();
+        }
+
+        private void ExecuteFillCommand(string[] commands)
+        {
+            if (commands.Length < 2 || !(commands[1].ToLower() == "on" || commands[1].ToLower() == "off"))
+                throw new ArgumentException("Invalid parameters for 'fill' command.");
+            graphicsGen.SetFill(commands[1].ToLower() == "on");
+        }
+
+        private void ExecutePositionCommand(string[] commands)
+        {
+            if (commands.Length < 4 || 
+                commands[1].ToLower() != "pen" || 
+                !int.TryParse(commands[2], out int posX) || 
+                !int.TryParse(commands[3], out int posY))
+                throw new ArgumentException("Invalid parameters for 'position pen' command.");
+            graphicsGen.SetCoords(posX, posY);
         }
 
         public void ParseHandler(string line, string syntax)
@@ -97,16 +123,17 @@ namespace C3624738
             }
             else
             {
-                ParseCommand(line);
+                ParseCommand(line.Trim());
             }
             graphicsBox.Refresh();
         }
 
         public void ParseMultiple(string syntax)
         {
-            foreach (string line in syntax.Split('\n'))
+            var lines = syntax.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var line in lines)
             {
-                ParseCommand(line);
+                ParseCommand(line.Trim());
             }
             graphicsBox.Refresh();
         }

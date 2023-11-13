@@ -97,19 +97,16 @@ namespace C3624738
         }
         public void SetCoords(int x, int y)
         {
-            // Implementation as provided earlier in your snippet.
             penCoords = (x, y);
         }
 
         public void MoveTo(int x, int y)
         {
-            // Update pen coordinates without drawing anything
             penCoords = (x, y);
         }
 
         public void Rectangle(int x, int y, int width, int height)
         {
-            // Create a new Rectangle instance and add it to the shapes list.
             Rectangle rect = new Rectangle(pen.Color, x, y, pen.Width, fill, width, height);
             shapes.Add(rect);
         }
