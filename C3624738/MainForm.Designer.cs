@@ -36,10 +36,9 @@ partial class MainForm
     {
         commandTextBox = new TextBox
         {
-            Location = new Point(10, 10),
-            Size = new Size(200, 40),
-            Multiline = true,
-            ScrollBars = ScrollBars.Vertical 
+            Location = new Point(10, 30),
+            Size = new Size(180, 40),
+            Multiline = false,
         };
         this.Controls.Add(commandTextBox);
 
@@ -67,7 +66,7 @@ partial class MainForm
             Size = new Size(80, 40)
         };
 
-        runButton.Click += RunButtonClick;
+        runButton.Click += RunClick;
         Controls.Add(runButton);
 
         syntaxCheckButton = new Button
@@ -77,7 +76,7 @@ partial class MainForm
             Size = new Size(80, 40)
         };
 
-        syntaxCheckButton.Click += SyntaxCheckButtonClick;
+        syntaxCheckButton.Click += SyntaxClick;
         Controls.Add(syntaxCheckButton);
 
         AutoScaleDimensions = new SizeF(6F, 13F);

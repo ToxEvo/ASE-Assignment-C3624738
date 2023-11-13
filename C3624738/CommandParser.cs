@@ -76,7 +76,7 @@ namespace C3624738
             graphicsBox.Refresh();
         }
 
-        public void CommandSyntaxCheck(string syntax)
+        public void ParseMultiple(string syntax)
         {
             foreach (string line in syntax.Split('\n'))
             {

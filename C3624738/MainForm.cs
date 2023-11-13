@@ -14,14 +14,14 @@ namespace C3624738
             graphicsBox.Paint += new PaintEventHandler(graphicalGen.GraphicalGen);
         }
 
-        private void RunButtonClick(object sender, EventArgs e)
+        private void RunClick(object sender, EventArgs e)
         {
             parser.ParseHandler(commandTextBox.Text);
         }
 
-        private void SyntaxCheckButtonClick(object sender, EventArgs e)
+        private void SyntaxClick(object sender, EventArgs e)
         {
-            parser.CommandSyntaxCheck(programTextBox.Text);
+            parser.ParseMultiple(programTextBox.Text);
         }
     }
 }
