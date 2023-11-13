@@ -19,10 +19,11 @@ namespace C3624738
             
             colors = new Dictionary<string, (int, int, int, int)>
             {
-                {"red", (255, 0, 0, 255)},
-                {"green", (0, 255, 0, 255)},
-                {"blue", (0, 0, 255, 255)},
-                {"black", (0, 0, 0, 255)}
+                {"red", (255, 255, 0, 0)},
+                {"green", (255, 0, 255, 0)},
+                {"blue", (255, 0, 0, 255)},
+                {"black", (255, 0, 0, 0)},
+                {"white", (255, 255, 255, 255)}
             };
         }
 
@@ -63,9 +64,6 @@ namespace C3624738
                 case "reset":
                     ExecuteResetCommand();
                     break;
-                case "draw":
-                    ExecuteDrawCommand(commands);
-                    break;
                 default:
                     throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
             }
@@ -73,10 +71,32 @@ namespace C3624738
 
         private void ExecutePenCommand(string[] commands)
         {
-            if (commands.Length < 2)
-                throw new ArgumentException("Not enough parameters for 'pen' command.");
-            var color = FindColor(commands[1]);
-            graphicsGen.SetColor(color);
+            // Check if the 'pen' command is followed by 'draw', which means a draw operation is intended.
+            if (commands.Length >= 2 && commands[1].ToLower() == "draw")
+            {
+                // Execute draw if 'draw' follows 'pen' and two more parameters are present for coordinates.
+                if (commands.Length == 4 && 
+                    int.TryParse(commands[2], out int x) && 
+                    int.TryParse(commands[3], out int y))
+                {
+                    graphicsGen.DrawTo(x, y);
+                    graphicsGen.SetCoords(x, y);
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid parameters for 'pen draw' command.");
+                }
+            }
+            else if(commands.Length == 2)
+            {
+                // If 'draw' is not present, it's a simple 'pen color' command.
+                var color = FindColor(commands[1]);
+                graphicsGen.SetColor(color);
+            }
+            else
+            {
+                throw new ArgumentException("Invalid 'pen' command format. Usage: 'pen color' or 'pen draw x y'.");
+            }
         }
 
         private void ExecuteCircleCommand(string[] commands)
@@ -119,20 +139,6 @@ namespace C3624738
                 !int.TryParse(commands[3], out int posY))
                 throw new ArgumentException("Invalid parameters for 'position pen' command.");
             graphicsGen.SetCoords(posX, posY);
-        }
-
-        private void ExecuteDrawCommand(string[] commands)
-        {
-            // Expecting command format: "pen draw x y"
-            if (commands.Length == 4 && commands[1].ToLower() == "draw" &&
-                int.TryParse(commands[2], out int x) && int.TryParse(commands[3], out int y))
-            {
-                graphicsGen.DrawTo(x, y);
-            }
-            else
-            {
-                throw new ArgumentException("Invalid parameters for 'pen draw' command.");
-            }
         }
 
         private void ExecuteResetCommand()
