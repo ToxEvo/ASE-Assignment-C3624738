@@ -4,11 +4,22 @@ namespace C3624738
     {
         protected int x, y;
         protected Pen pen;
-        protected Shape(Color color, int x, int y, float width)
+        protected bool fill;
+        protected SolidBrush solid;
+        protected Shape(Color color, int x, int y, float width, bool fill)
         {
             this.x = x;
             this.y = y;
-            pen = new Pen(color, width);
+            this.fill = fill;
+            if (fill)
+            {
+                solid = new SolidBrush(color);
+            }
+            else 
+            {
+                pen = new Pen(color, width);
+            }
+            
         }
         ~Shape()
         {

@@ -52,6 +52,19 @@ namespace C3624738
                         graphicsGen.Clear();
                     }
                     break;
+                case "fill":
+                    if(commands.Length == 2) 
+                    {
+                        if (commands[1] == "on")
+                        {
+                            graphicsGen.SetFill(true);
+                        }
+                        else if (commands[1] == "off")
+                        {
+                            graphicsGen.SetFill(false);
+                        }
+                    }
+                    break;
                 default:
                     throw new Exception("Invalid command");
             }

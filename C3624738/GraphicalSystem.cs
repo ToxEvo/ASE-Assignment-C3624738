@@ -8,18 +8,22 @@ namespace C3624738
         public float GetWidth();
         public void Circle(int x, int y, int radius);
         public void Clear();
+        public bool GetFill();
+        public void SetFill(bool fill);
     }
 
     class Graphical : IGraphical
     {
         private Pen pen;
         protected List<Shape> shapes;
+        protected bool fill;
 
         public Graphical()
         {
             pen = new Pen(Color.Black, 3);
 
             shapes = new List<Shape>();
+            fill = false;
         }
 
         ~Graphical()
@@ -59,7 +63,7 @@ namespace C3624738
 
         public void Circle(int x, int y, int radius)
         {
-            Circle circle = new Circle(pen.Color, x, y, pen.Width, radius);
+            Circle circle = new Circle(pen.Color, x, y, pen.Width, fill, radius);
             shapes.Add(circle);
         }
 
@@ -67,5 +71,16 @@ namespace C3624738
         {
             shapes.Clear();
         }
+
+        public bool GetFill()
+        {
+            return fill;
+        }
+
+        public void SetFill(bool fill)
+        {
+            this.fill = fill;
+        }
+
     }
 }
