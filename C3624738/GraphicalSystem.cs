@@ -14,7 +14,9 @@ namespace C3624738
         public bool GetFill();
         public void SetFill(bool fill);
         public (int, int) GetCoords();
-        public void SetCoords(int x, int y);
+        void SetCoords(int x, int y);
+        public void MoveTo (int x, int y);
+        
     }
 
     class Graphical : IGraphical
@@ -93,9 +95,15 @@ namespace C3624738
         {
             return penCoords;
         }
-
         public void SetCoords(int x, int y)
         {
+            // Implementation as provided earlier in your snippet.
+            penCoords = (x, y);
+        }
+
+        public void MoveTo(int x, int y)
+        {
+            // Update pen coordinates without drawing anything
             penCoords = (x, y);
         }
 

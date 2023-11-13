@@ -74,6 +74,16 @@ namespace C3624738
                         graphicsGen.SetFill(commands[1].Equals("on", StringComparison.OrdinalIgnoreCase));
                     }
                     break;
+                     case "moveto":
+                    if (commands.Length == 3 && int.TryParse(commands[1], out int moveToX) && int.TryParse(commands[2], out int moveToY))
+                    {
+                        graphicsGen.SetCoords(moveToX, moveToY);
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid moveto command format. Expected format: 'moveto x y'");
+                    }
+                    break;
                 default:
                     throw new Exception("Invalid command");
             }
