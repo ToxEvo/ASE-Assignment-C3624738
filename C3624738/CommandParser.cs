@@ -120,6 +120,10 @@ namespace C3624738
             }
         }
 
+        /// <summary>
+        /// Executes a command related to the pen.
+        /// </summary>
+        /// <param name="commands">The command arguments where the first is the command name.</param>
         private void ExecutePenCommand(string[] commands)
         {
             if (commands.Length == 2)
@@ -144,6 +148,10 @@ namespace C3624738
             }
         }
 
+        /// <summary>
+        /// Executes the circle drawing command.
+        /// </summary>
+        /// <param name="commands">The command arguments where the first is the command name and the second is the radius.</param>
         private void ExecuteCircleCommand(string[] commands)
         {
             if (commands.Length != 2 || !int.TryParse(commands[1], out int radius))
@@ -153,6 +161,10 @@ namespace C3624738
             graphicsGen.Circle(coords.Item1, coords.Item2, radius);
         }
 
+        /// <summary>
+        /// Executes the rectangle drawing command.
+        /// </summary>
+        /// <param name="commands">The command arguments where the first is the command name, followed by width and height.</param>
         private void ExecuteRectangleCommand(string[] commands)
         {
             if (commands.Length != 3 || 
@@ -164,6 +176,10 @@ namespace C3624738
             graphicsGen.Rectangle(coords.Item1, coords.Item2, width, height);
         }
 
+        /// <summary>
+        /// Executes the command to clear the drawing area.
+        /// </summary>
+        /// <param name="commands">The command arguments where the first is the command name.</param>
         private void ExecuteClearCommand(string[] commands)
         {
             if (commands.Length > 1)
@@ -171,6 +187,10 @@ namespace C3624738
             graphicsGen.Clear();
         }
 
+        /// <summary>
+        /// Executes the fill command to toggle filling shapes on or off.
+        /// </summary>
+        /// <param name="commands">The command arguments where the first is the command name and the second is the fill toggle.</param>
         private void ExecuteFillCommand(string[] commands)
         {
             if (commands.Length < 2 || !(commands[1].ToLower() == "on" || commands[1].ToLower() == "off"))
@@ -178,6 +198,10 @@ namespace C3624738
             graphicsGen.SetFill(commands[1].ToLower() == "on");
         }
 
+        /// <summary>
+        /// Executes the command to set the pen position.
+        /// </summary>
+        /// <param name="commands">The command arguments where the first is the command name, followed by the x and y coordinates.</param>
         private void ExecutePositionCommand(string[] commands)
         {
             if (commands.Length != 4 || commands[1].ToLower() != "pen")
@@ -188,6 +212,10 @@ namespace C3624738
             graphicsGen.SetCoords(posX, posY);
         }
 
+        /// <summary>
+        /// Executes the save command to write command history to a file.
+        /// </summary>
+        /// <param name="commands">The command arguments where the first is the command name, followed by the filepath and filename.</param>
         private void ExecuteSaveCommand(string[] commands)
         {
             // Expecting command format: "save filepath filename"
@@ -198,6 +226,10 @@ namespace C3624738
             File.WriteAllLines(path, commandHistory);
         }
 
+        /// <summary>
+        /// Executes the load command to read commands from a file and execute them.
+        /// </summary>
+        /// <param name="commands">The command arguments where the first is the command name, followed by the filepath and filename.</param>
         private void ExecuteLoadCommand(string[] commands)
         {
             // Command format: "load filepath filename"
@@ -222,6 +254,10 @@ namespace C3624738
             }
         }
 
+        /// <summary>
+        /// Executes the reset command to set the pen coordinates to (0,0).
+        /// </summary>
+        /// <param name="commands">The command arguments where the first is the command name.</param>
         private void ExecuteResetCommand(string[] commands)
         {
             if (commands.Length > 1)
@@ -231,6 +267,11 @@ namespace C3624738
             graphicsGen.SetCoords(0, 0);
         }
 
+        /// <summary>
+        /// Handles parsing of a single line command or multiple lines of commands.
+        /// </summary>
+        /// <param name="line">The single line command to parse, or "run" to execute multiple commands.</param>
+        /// <param name="syntax">The multi-line syntax containing commands to execute.</param>
         public void ParseHandler(string line, string syntax)
         {
             if (line == "run")
@@ -244,6 +285,10 @@ namespace C3624738
             graphicsBox.Refresh();
         }
 
+        /// <summary>
+        /// Parses and executes multiple lines of commands.
+        /// </summary>
+        /// <param name="syntax">The multi-line syntax containing commands to execute.</param>
         public void ParseMultiple(string syntax)
         {
             var lines = syntax.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
