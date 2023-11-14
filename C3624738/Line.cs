@@ -1,6 +1,3 @@
-using System;
-using System.Drawing;
-
 namespace C3624738
 {
     class Line : Shape

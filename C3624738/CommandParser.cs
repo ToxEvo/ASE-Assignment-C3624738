@@ -1,14 +1,5 @@
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Collections.Generic;
-
 namespace C3624738
 {
-    public class CommandsLoadedEventArgs : EventArgs
-    {
-        public string[] Commands { get; set; }
-    }
     class CommandParser 
     {
         private readonly IGraphical graphicsGen;

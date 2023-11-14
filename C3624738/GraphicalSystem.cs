@@ -1,6 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
-using System.Drawing;
-
 namespace C3624738
 {
     interface IGraphical
