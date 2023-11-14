@@ -2,11 +2,32 @@ namespace C3624738
 {
     class CommandParser 
     {
+        /// <summary>
+        /// Responsible for rendering graphics based on commands.
+        /// </summary>
         private readonly IGraphical graphicsGen;
+        
+        /// <summary>
+        /// The PictureBox control where graphics are displayed.
+        /// </summary>
         private readonly PictureBox graphicsBox;
+
+        /// <summary>
+        /// Dictionary mapping color names to their RGBA values.
+        /// </summary>
         private readonly Dictionary<string, (int, int, int, int)> colors;
+
+        /// <summary>
+        /// Stores the history of all commands executed, excluding 'save' and 'load' to prevent recursion.
+        /// </summary>
         private List<string> commandHistory = new List<string>();
 
+        /// <summary>
+        /// Initializes a new instance of the CommandParser class with required graphical interface and picture box.
+        /// </summary>
+        /// <param name="graphicsGen">The graphical interface for executing commands.</param>
+        /// <param name="graphicsBox">The picture box where drawings are rendered.</param>
+        /// <exception cref="ArgumentNullException">Thrown when graphicsGen or graphicsBox is null.</exception>
         public CommandParser(IGraphical graphicsGen, PictureBox graphicsBox)
         {
             this.graphicsGen = graphicsGen ?? throw new ArgumentNullException(nameof(graphicsGen));
@@ -22,6 +43,12 @@ namespace C3624738
             };
         }
 
+        /// <summary>
+        /// Finds the RGBA value of the specified color.
+        /// </summary>
+        /// <param name="color">The name of the color to find.</param>
+        /// <returns>The RGBA tuple of the color.</returns>
+        /// <exception cref="ArgumentException">Thrown when the color is not defined.</exception>
         private (int, int, int, int) FindColor(string color)
         {
             var readableColor = color.ToLower();
@@ -32,6 +59,12 @@ namespace C3624738
             throw new ArgumentException($"The color '{color}' is not defined.");
         }
 
+        /// <summary>
+        /// Parses the input command and executes the corresponding graphical operation.
+        /// </summary>
+        /// <param name="command">The command to parse and execute.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the command is unrecognized.</exception>
+        /// <exception cref="ArgumentException">Thrown when the command arguments are invalid.</exception>
         public void ParseCommand(string command)
         {
             // Trim and convert command to lowercase for checking against 'save' and 'load'
