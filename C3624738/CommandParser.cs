@@ -7,7 +7,6 @@ namespace C3624738
         private readonly Dictionary<string, (int, int, int, int)> colors;
         private List<string> commandHistory = new List<string>();
 
-
         public CommandParser(IGraphical graphicsGen, PictureBox graphicsBox)
         {
             this.graphicsGen = graphicsGen ?? throw new ArgumentNullException(nameof(graphicsGen));
@@ -15,10 +14,10 @@ namespace C3624738
             
             colors = new Dictionary<string, (int, int, int, int)>
             {
-                {"red", (255, 255, 0, 0)},
-                {"green", (255, 0, 255, 0)},
-                {"blue", (255, 0, 0, 255)},
-                {"black", (255, 0, 0, 0)},
+                {"red", (255, 0, 0, 255)},
+                {"green", (0, 255, 0, 255)},
+                {"blue", (0, 0, 255, 255)},
+                {"black", (0, 0, 0, 255)},
                 {"white", (255, 255, 255, 255)}
             };
         }
@@ -47,84 +46,87 @@ namespace C3624738
             // Split the command into parts
             var commands = trimmedCommand.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            switch (commands[0].ToLower())
+            try
             {
-                case "pen":
-                    ExecutePenCommand(commands);
-                    break;
-                case "circle":
-                    ExecuteCircleCommand(commands);
-                    break;
-                case "rectangle":
-                    ExecuteRectangleCommand(commands);
-                    break;
-                case "clear":
-                    ExecuteClearCommand(commands);
-                    break;
-                case "fill":
-                    ExecuteFillCommand(commands);
-                    break;
-                case "position":
-                    ExecutePositionCommand(commands);
-                    break;
-                case "reset":
-                    ExecuteResetCommand();
-                    break;
-                case "save":
-                    ExecuteSaveCommand(commands);
-                    break;
-                case "load":
-                    ExecuteLoadCommand(commands);
-                    break;
-                default:
-                    throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
+                switch (commands[0].ToLower())
+                {
+                    case "pen":
+                        ExecutePenCommand(commands);
+                        break;
+                    case "circle":
+                        ExecuteCircleCommand(commands);
+                        break;
+                    case "rectangle":
+                        ExecuteRectangleCommand(commands);
+                        break;
+                    case "clear":
+                        ExecuteClearCommand(commands);
+                        break;
+                    case "fill":
+                        ExecuteFillCommand(commands);
+                        break;
+                    case "position":
+                        ExecutePositionCommand(commands);
+                        break;
+                    case "reset":
+                        ExecuteResetCommand(commands);
+                        break;
+                    case "save":
+                        ExecuteSaveCommand(commands);
+                        break;
+                    case "load":
+                        ExecuteLoadCommand(commands);
+                        break;
+                    default:
+                        throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void ExecutePenCommand(string[] commands)
         {
-            // Check if the 'pen' command is followed by 'draw', which means a draw operation is intended.
-            if (commands.Length >= 2 && commands[1].ToLower() == "draw")
+            if (commands.Length == 2)
             {
-                // Execute draw if 'draw' follows 'pen' and two more parameters are present for coordinates.
-                if (commands.Length == 4 && 
-                    int.TryParse(commands[2], out int x) && 
-                    int.TryParse(commands[3], out int y))
-                {
-                    graphicsGen.DrawTo(x, y);
-                    graphicsGen.SetCoords(x, y);
-                }
-                else
-                {
-                    throw new ArgumentException("Invalid parameters for 'pen draw' command.");
-                }
-            }
-            else if(commands.Length == 2)
-            {
-                // If 'draw' is not present, it's a simple 'pen color' command.
                 var color = FindColor(commands[1]);
                 graphicsGen.SetColor(color);
             }
+            else if (commands.Length == 4 && commands[1].ToLower() == "draw")
+            {
+                if (int.TryParse(commands[2], out int x) && int.TryParse(commands[3], out int y))
+                {
+                    graphicsGen.DrawTo(x, y);
+                }
+                else
+                {
+                    throw new ArgumentException("Correct usage: 'pren color // pen draw x y'");
+                }
+            }
             else
             {
-                throw new ArgumentException("Invalid 'pen' command format. Usage: 'pen color' or 'pen draw x y'.");
+                throw new ArgumentException("Correct usage: 'pren color // pen draw x y'");
             }
         }
 
         private void ExecuteCircleCommand(string[] commands)
         {
-            if (commands.Length < 2 || !int.TryParse(commands[1], out int radius))
-                throw new ArgumentException("Invalid parameters for 'circle' command.");
+            if (commands.Length != 2 || !int.TryParse(commands[1], out int radius))
+                throw new ArgumentException("Correct usage: 'circle radius'");
+
             var coords = graphicsGen.GetCoords();
             graphicsGen.Circle(coords.Item1, coords.Item2, radius);
         }
 
         private void ExecuteRectangleCommand(string[] commands)
         {
-            if (commands.Length < 3 || 
+            if (commands.Length != 3 || 
                 !int.TryParse(commands[1], out int width) || 
                 !int.TryParse(commands[2], out int height))
-                throw new ArgumentException("Invalid parameters for 'rectangle' command.");
+                throw new ArgumentException("Correct usage: 'rectangle width height'");
+
             var coords = graphicsGen.GetCoords();
             graphicsGen.Rectangle(coords.Item1, coords.Item2, width, height);
         }
@@ -132,24 +134,24 @@ namespace C3624738
         private void ExecuteClearCommand(string[] commands)
         {
             if (commands.Length > 1)
-                throw new ArgumentException("Too many parameters for 'clear' command.");
+                throw new ArgumentException("Correct usage: 'clear'");
             graphicsGen.Clear();
         }
 
         private void ExecuteFillCommand(string[] commands)
         {
             if (commands.Length < 2 || !(commands[1].ToLower() == "on" || commands[1].ToLower() == "off"))
-                throw new ArgumentException("Invalid parameters for 'fill' command.");
+                throw new ArgumentException("Correct usage: 'fill on/off'");
             graphicsGen.SetFill(commands[1].ToLower() == "on");
         }
 
         private void ExecutePositionCommand(string[] commands)
         {
-            if (commands.Length < 4 || 
-                commands[1].ToLower() != "pen" || 
-                !int.TryParse(commands[2], out int posX) || 
-                !int.TryParse(commands[3], out int posY))
-                throw new ArgumentException("Invalid parameters for 'position pen' command.");
+            if (commands.Length != 4 || commands[1].ToLower() != "pen")
+                throw new ArgumentException("Correct usage: 'position pen x y'");
+            if (!int.TryParse(commands[2], out int posX) || !int.TryParse(commands[3], out int posY))
+                throw new ArgumentException("Correct usage: 'position pen x y'");
+            
             graphicsGen.SetCoords(posX, posY);
         }
 
@@ -157,7 +159,7 @@ namespace C3624738
         {
             // Expecting command format: "save filepath filename"
             if (commands.Length != 3)
-                throw new ArgumentException("Invalid parameters for 'save' command.");
+                throw new ArgumentException("Correct usage: 'save filepath filename'");
 
             string path = Path.Combine(commands[1], commands[2]);
             File.WriteAllLines(path, commandHistory);
@@ -167,7 +169,7 @@ namespace C3624738
         {
             // Command format: "load filepath filename"
             if (commands.Length != 3)
-                throw new ArgumentException("Invalid parameters for 'load' command.");
+                throw new ArgumentException("Correct usage: 'save filepath filename'");
 
             string fullPath = Path.Combine(commands[1], commands[2]);
             if (!File.Exists(fullPath))
@@ -187,8 +189,12 @@ namespace C3624738
             }
         }
 
-        private void ExecuteResetCommand()
+        private void ExecuteResetCommand(string[] commands)
         {
+            if (commands.Length > 1)
+            {
+                throw new ArgumentException("Correct usage: 'reset'");
+            }
             graphicsGen.SetCoords(0, 0);
         }
 
