@@ -4,8 +4,6 @@ namespace C3624738
     {
         public void SetColor((int, int, int, int) color);
         public (int, int, int, int) GetColor();
-        public void SetWidth(float width);
-        public float GetWidth();
         public void Circle(int x, int y, int radius);
         public void Rectangle(int x, int y, int width, int height);
         public void Clear();
@@ -56,16 +54,6 @@ namespace C3624738
         {
             Color color = pen.Color;
             return (color.A, color.R, color.G, color.B);
-        }
-
-        public void SetWidth(float width)
-        {
-            pen.Width = width;
-        }
-
-        public float GetWidth()
-        {
-            return pen.Width;
         }
 
         public void Circle(int x, int y, int radius)
