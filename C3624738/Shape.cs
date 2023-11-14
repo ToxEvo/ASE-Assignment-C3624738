@@ -1,5 +1,3 @@
-using System.Drawing;
-
 namespace C3624738
 {
     /// <summary>
