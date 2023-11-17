@@ -20,6 +20,7 @@ namespace C3624738.Tests
         [TestInitialize]
         public void SetUp()
         {
+            // Arrange
             mockGraphicsGen = new Mock<IGraphical>();
             mockPictureBox = new Mock<PictureBox>();
             commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
@@ -100,7 +101,7 @@ namespace C3624738.Tests
         }
 
         [TestMethod]
-        public void ParseCommand_ExecutesMovetoCommandCorrectly()
+        public void ParseCommand_ExecutesPositionPenCommandCorrectly()
         {
             // Arrange
             int expectedX = 100;
@@ -110,7 +111,21 @@ namespace C3624738.Tests
             commandParser.ParseCommand($"position pen {expectedX} {expectedY}");
 
             // Assert
-            mockGraphicsGen.Verify(g => g.SetCoords(expectedX, expectedY), Times.Once, "The method SetCoords was not called with the expected parameters.");
+            mockGraphicsGen.Verify(g => g.SetCoords(expectedX, expectedY), Times.Once);
+        }
+
+        [TestMethod]
+        public void ParseCommand_ExecutesPenDrawCommandCorrectly()
+        {
+            // Arrange
+            int expectedX = 150;
+            int expectedY = 250;
+
+            // Act
+            commandParser.ParseCommand($"pen draw {expectedX} {expectedY}");
+
+            // Assert
+            mockGraphicsGen.Verify(g => g.DrawTo(expectedX, expectedY), Times.Once);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace C3624738.Tests
     [TestClass()]
     public class CommandParserTestsInvalid
     {
+        // Arrange
         private Mock<IGraphical> mockGraphicsGen;
         private Mock<PictureBox> mockPictureBox;
         private CommandParser commandParser;
