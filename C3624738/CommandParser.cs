@@ -117,7 +117,6 @@ namespace C3624738
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                throw; // Rethrow the caught exception
             }
         }
 

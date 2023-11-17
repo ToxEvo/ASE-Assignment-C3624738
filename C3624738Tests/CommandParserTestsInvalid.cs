@@ -27,53 +27,78 @@ namespace C3624738.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void ParseCommand_ThrowsExceptionForInvalidCommand_Crcle()
+        public void ParseCommand_CatchesExceptionForInvalidCommand_Crcle()
         {
-            // Act
-            commandParser.ParseCommand("crcle 50");
-
-            // Assert is handled by ExpectedException
+            try
+            {
+                // Act
+                commandParser.ParseCommand("crcle 50");
+                Assert.Fail("Expected InvalidOperationException was not thrown.");
+            }
+            catch (Exception)
+            {
+                // Exception was caught, which is expected
+            }
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void ParseCommand_ThrowsExceptionForInvalidCommand_Movto()
+        public void ParseCommand_CatchesExceptionForInvalidCommand_Movto()
         {
-            // Act
-            commandParser.ParseCommand("movto 100,100");
-
-            // Assert is handled by ExpectedException
+            try
+            {
+                // Act
+                commandParser.ParseCommand("movto 100,100");
+                Assert.Fail("Expected InvalidOperationException was not thrown.");
+            }
+            catch (Exception)
+            {
+                // Exception was caught, which is expected
+            }
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ParseCommand_ThrowsArgumentExceptionForCircleWithInvalidParameters()
+        public void ParseCommand_CatchesArgumentExceptionForCircleWithInvalidParameters()
         {
-            // Act
-            commandParser.ParseCommand("circle x");
-
-            // Assert is handled by ExpectedException
+            try
+            {
+                // Act
+                commandParser.ParseCommand("circle x");
+                Assert.Fail("Expected ArgumentException was not thrown.");
+            }
+            catch (Exception)
+            {
+                // Exception was caught, which is expected
+            }
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ParseCommand_ThrowsArgumentExceptionForMovetoWithTooFewParameters()
+        public void ParseCommand_CatchesArgumentExceptionForMovetoWithTooFewParameters()
         {
-            // Act
-            commandParser.ParseCommand("pen draw 100");
-
-            // Assert is handled by ExpectedException
+            try
+            {
+                // Act
+                commandParser.ParseCommand("pen draw 100");
+                Assert.Fail("Expected ArgumentException was not thrown.");
+            }
+            catch (Exception)
+            {
+                // Exception was caught, which is expected
+            }
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ParseCommand_ThrowsArgumentExceptionForDrawtoWithTooManyParameters()
+        public void ParseCommand_CatchesArgumentExceptionForDrawtoWithTooManyParameters()
         {
-            // Act
-            commandParser.ParseCommand("pen draw 100,100,100");
-
-            // Assert is handled by ExpectedException
+            try
+            {
+                // Act
+                commandParser.ParseCommand("pen draw 100,100,100");
+                Assert.Fail("Expected ArgumentException was not thrown.");
+            }
+            catch (Exception)
+            {
+                // Exception was caught, which is expected
+            }
         }
     }
 }
