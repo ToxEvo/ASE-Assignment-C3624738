@@ -178,5 +178,25 @@ namespace C3624738.Tests
             // Assert
             mockGraphicsGen.Verify(g => g.Circle(initialPosition.Item1, initialPosition.Item2, expectedRadius), Times.Once);
         }
+
+        [TestMethod]
+        public void ParseCommand_ExecutesFillOnCommandCorrectly()
+        {
+            // Act
+            commandParser.ParseCommand("fill on");
+
+            // Assert
+            mockGraphicsGen.Verify(g => g.SetFill(true), Times.Once);
+        }
+
+        [TestMethod]
+        public void ParseCommand_ExecutesFillOffCommandCorrectly()
+        {
+            // Act
+            commandParser.ParseCommand("fill off");
+
+            // Assert
+            mockGraphicsGen.Verify(g => g.SetFill(false), Times.Once);
+        }
     }
 }
