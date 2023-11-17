@@ -8,24 +8,32 @@
     "net7.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\toxev\\.nuget\\packages\\": {}
+    "C:\\Users\\toxev\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\toxev\\OneDrive\\Documents\\GitHub\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj",
+      "projectUniqueName": "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj",
       "projectName": "C3624738",
-      "projectPath": "C:\\Users\\toxev\\OneDrive\\Documents\\GitHub\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj",
+      "projectPath": "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj",
       "packagesPath": "C:\\Users\\toxev\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\toxev\\OneDrive\\Documents\\GitHub\\ASE-Assignment-C3624738\\C3624738\\obj\\",
+      "outputPath": "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\toxev\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\toxev\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0-windows"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
