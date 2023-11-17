@@ -44,5 +44,35 @@ namespace C3624738.Tests
 
             // Assert is handled by ExpectedException
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ParseCommand_ThrowsArgumentExceptionForCircleWithInvalidParameters()
+        {
+            // Act
+            commandParser.ParseCommand("circle x");
+
+            // Assert is handled by ExpectedException
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ParseCommand_ThrowsArgumentExceptionForMovetoWithTooFewParameters()
+        {
+            // Act
+            commandParser.ParseCommand("pen draw 100");
+
+            // Assert is handled by ExpectedException
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ParseCommand_ThrowsArgumentExceptionForDrawtoWithTooManyParameters()
+        {
+            // Act
+            commandParser.ParseCommand("pen draw 100,100,100");
+
+            // Assert is handled by ExpectedException
+        }
     }
 }
