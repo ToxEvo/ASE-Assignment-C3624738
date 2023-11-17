@@ -1,0 +1,6 @@
+draw 50 50
+draw 60 60
+draw 70 70
+pen draw 50 50
+pen draw 60 60
+pen draw 70 70
