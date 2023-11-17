@@ -162,5 +162,21 @@ namespace C3624738.Tests
             // Assert
             mockGraphicsGen.Verify(g => g.Rectangle(initialPosition.Item1, initialPosition.Item2, expectedWidth, expectedHeight), Times.Once);
         }
+
+        [TestMethod]
+        public void ParseCommand_ExecutesCircleCommandCorrectly()
+        {
+            // Arrange
+            int expectedRadius = 50;
+
+            // Get the initial position for the center of the circle (assuming it's (0, 0))
+            var initialPosition = (0, 0);
+
+            // Act
+            commandParser.ParseCommand($"circle {expectedRadius}");
+
+            // Assert
+            mockGraphicsGen.Verify(g => g.Circle(initialPosition.Item1, initialPosition.Item2, expectedRadius), Times.Once);
+        }
     }
 }
