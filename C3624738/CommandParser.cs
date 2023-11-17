@@ -234,7 +234,7 @@ namespace C3624738
         {
             // Command format: "load filepath filename"
             if (commands.Length != 3)
-                throw new ArgumentException("Correct usage: 'save filepath filename'");
+                throw new ArgumentException("Correct usage: 'load filepath filename'");
 
             string fullPath = Path.Combine(commands[1], commands[2]);
             if (!File.Exists(fullPath))
