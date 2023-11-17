@@ -127,5 +127,40 @@ namespace C3624738.Tests
             // Assert
             mockGraphicsGen.Verify(g => g.DrawTo(expectedX, expectedY), Times.Once);
         }
+
+        [TestMethod]
+        public void ParseCommand_ExecutesClearCommandCorrectly()
+        {
+            // Act
+            commandParser.ParseCommand("clear");
+
+            // Assert
+            mockGraphicsGen.Verify(g => g.Clear(), Times.Once);
+        }
+
+        [TestMethod]
+        public void ParseCommand_ExecutesResetCommandCorrectly()
+        {
+            // Act
+            commandParser.ParseCommand("reset");
+
+            // Assert
+            mockGraphicsGen.Verify(g => g.SetCoords(0, 0), Times.Once);
+        }
+
+        [TestMethod]
+        public void ParseCommand_ExecutesRectangleCommandCorrectly()
+        {
+            // Arrange
+            int expectedWidth = 200;
+            int expectedHeight = 100;
+            var initialPosition = (0, 0);
+
+            // Act
+            commandParser.ParseCommand($"rectangle {expectedWidth} {expectedHeight}");
+
+            // Assert
+            mockGraphicsGen.Verify(g => g.Rectangle(initialPosition.Item1, initialPosition.Item2, expectedWidth, expectedHeight), Times.Once);
+        }
     }
 }
