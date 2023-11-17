@@ -98,5 +98,19 @@ namespace C3624738.Tests
             // Verify that a rectangle was drawn with the specified dimensions
             mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), 100, 200), Times.Once);
         }
+
+        [TestMethod]
+        public void ParseCommand_ExecutesMovetoCommandCorrectly()
+        {
+            // Arrange
+            int expectedX = 100;
+            int expectedY = 200;
+
+            // Act
+            commandParser.ParseCommand($"position pen {expectedX} {expectedY}");
+
+            // Assert
+            mockGraphicsGen.Verify(g => g.SetCoords(expectedX, expectedY), Times.Once, "The method SetCoords was not called with the expected parameters.");
+        }
     }
 }
