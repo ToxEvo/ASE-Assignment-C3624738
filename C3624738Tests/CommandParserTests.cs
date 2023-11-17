@@ -13,14 +13,21 @@ namespace C3624738.Tests
     [TestClass()]
     public class CommandParserTests
     {
-        [TestMethod()]
-        public void ParseCommand_ExecutesPenColorCommandCorrectl()
-        {
-            // Arrange
-            var mockGraphicsGen = new Mock<IGraphical>();
-            var mockPictureBox = new Mock<PictureBox>();
-            var commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
+        private Mock<IGraphical> mockGraphicsGen;
+        private Mock<PictureBox> mockPictureBox;
+        private CommandParser commandParser;
 
+        [TestInitialize]
+        public void SetUp()
+        {
+            mockGraphicsGen = new Mock<IGraphical>();
+            mockPictureBox = new Mock<PictureBox>();
+            commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
+        }
+
+        [TestMethod()]
+        public void ParseCommand_ExecutesPenColorCommandCorrectly()
+        {
             // Act
             commandParser.ParseCommand("pen red");
 
@@ -33,10 +40,6 @@ namespace C3624738.Tests
         public void ParseHandler_ExecutesMultipleCommandsOnRun()
         {
             // Arrange
-            var mockGraphicsGen = new Mock<IGraphical>();
-            var mockPictureBox = new Mock<PictureBox>();
-            var commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
-
             string multiLineCommands = "pen red\n" + // Change pen color to red
                                        "position pen 100 100\n" + // Move pen to (100, 100)
                                        "circle 50\n" + // Draw a circle with radius 50
@@ -61,10 +64,6 @@ namespace C3624738.Tests
         public void CommandParser_SavesCommandsToFile()
         {
             // Arrange
-            var mockGraphicsGen = new Mock<IGraphical>();
-            var mockPictureBox = new Mock<PictureBox>();
-            var commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
-
             string tempFilePath = "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\TempFile\\";
             string[] commandsToSave = { "pen red", "circle 50" };
             foreach (var cmd in commandsToSave)
@@ -84,9 +83,6 @@ namespace C3624738.Tests
         public void CommandParser_LoadsCommandsFromFileAndExecutes()
         {
             // Arrange
-            var mockGraphicsGen = new Mock<IGraphical>();
-            var mockPictureBox = new Mock<PictureBox>();
-            var commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
 
             string tempFilePath = "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\TempFile\\test2.txt";
             string[] commandsToLoad = { "pen blue", "rectangle 100 200" };
