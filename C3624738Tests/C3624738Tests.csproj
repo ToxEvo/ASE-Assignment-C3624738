@@ -21,4 +21,8 @@
     <ProjectReference Include="..\C3624738\C3624738.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TempFile\" />
+  </ItemGroup>
+
 </Project>

@@ -53,8 +53,55 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.Circle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
             mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
 
-            // Refresh should be called once after executing all commands
+            // Refresh should be called once after executing every command
             mockPictureBox.Verify(g => g.Refresh(), Times.Exactly(6));
+        }
+
+        [TestMethod]
+        public void CommandParser_SavesCommandsToFile()
+        {
+            // Arrange
+            var mockGraphicsGen = new Mock<IGraphical>();
+            var mockPictureBox = new Mock<PictureBox>();
+            var commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
+
+            string tempFilePath = "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\TempFile\\";
+            string[] commandsToSave = { "pen red", "circle 50" };
+            foreach (var cmd in commandsToSave)
+            {
+                commandParser.ParseCommand(cmd);
+            }
+
+            // Act
+            commandParser.ParseCommand($"save {tempFilePath} test1.txt");
+
+            // Assert
+            var savedCommands = File.ReadAllLines("C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\TempFile\\test1.txt");
+            CollectionAssert.AreEqual(commandsToSave, savedCommands);
+        }
+
+        [TestMethod]
+        public void CommandParser_LoadsCommandsFromFileAndExecutes()
+        {
+            // Arrange
+            var mockGraphicsGen = new Mock<IGraphical>();
+            var mockPictureBox = new Mock<PictureBox>();
+            var commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
+
+            string tempFilePath = "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\TempFile\\test2.txt";
+            string[] commandsToLoad = { "pen blue", "rectangle 100 200" };
+            File.WriteAllLines(tempFilePath, commandsToLoad);
+
+            // Act
+            commandParser.ParseCommand("load C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\TempFile\\ test2.txt");
+
+            // Assert
+            // Verify that the pen color was set to blue
+            mockGraphicsGen.Verify(g => g.SetColor(It.Is<(int, int, int, int)>(c =>
+                c.Item1 == 255 && c.Item2 == 0 && c.Item3 == 0 && c.Item4 == 255)), Times.Once);
+
+            // Verify that a rectangle was drawn with the specified dimensions
+            mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), 100, 200), Times.Once);
         }
     }
 }

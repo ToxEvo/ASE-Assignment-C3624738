@@ -1,0 +1,2 @@
+pen blue
+rectangle 100 200
