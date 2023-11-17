@@ -11,7 +11,7 @@ using Moq;
 namespace C3624738.Tests
 {
     [TestClass()]
-    public class CommandParserTests
+    public class CommandParserTestsValid
     {
         private Mock<IGraphical> mockGraphicsGen;
         private Mock<PictureBox> mockPictureBox;
