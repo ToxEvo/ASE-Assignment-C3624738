@@ -3,7 +3,7 @@ namespace C3624738
     /// <summary>
     /// Represents a rectangle shape with customizable position, size, and style attributes.
     /// </summary>
-    class Rectangle : Shape
+    public class Rectangle : Shape
     {
         /// <summary>
         /// The width of the rectangle.

@@ -1,22 +1,21 @@
-
 namespace C3624738
 {
     /// <summary>
     /// Defines the graphical operations that can be performed.
     /// </summary>
-    interface IGraphical
+    public interface IGraphical
     {
         /// <summary>
         /// Sets the current drawing color.
         /// </summary>
         /// <param name="color">A tuple representing the ARGB color components.</param>
-        void SetColor((int alpha, int red, int green, int blue) color);
+        public void SetColor((int alpha, int red, int green, int blue) color);
 
         /// <summary>
         /// Retrieves the current drawing color.
         /// </summary>
         /// <returns>A tuple representing the ARGB color components.</returns>
-        (int alpha, int red, int green, int blue) GetColor();
+        public (int alpha, int red, int green, int blue) GetColor();
 
         /// <summary>
         /// Draws a circle at the specified coordinates with the given radius.
@@ -38,39 +37,39 @@ namespace C3624738
         /// <summary>
         /// Clears all shapes from the drawing area.
         /// </summary>
-        void Clear();
+        public void Clear();
 
         /// <summary>
         /// Retrieves the current fill status for shapes.
         /// </summary>
         /// <returns>True if shapes are filled, otherwise false.</returns>
-        bool GetFill();
+        public bool GetFill();
 
         /// <summary>
         /// Sets the fill status for drawing shapes.
         /// </summary>
         /// <param name="fill">True to fill shapes, false to draw only their outlines.</param>
-        void SetFill(bool fill);
+        public void SetFill(bool fill);
 
         /// <summary>
         /// Gets the current position of the graphical cursor.
         /// </summary>
         /// <returns>The current coordinates as a tuple.</returns>
-        (int x, int y) GetCoords();
+        public (int x, int y) GetCoords();
 
         /// <summary>
         /// Sets the current position of the graphical cursor.
         /// </summary>
         /// <param name="x">The x-coordinate to move to.</param>
         /// <param name="y">The y-coordinate to move to.</param>
-        void SetCoords(int x, int y);
+        public void SetCoords(int x, int y);
 
         /// <summary>
         /// Moves the cursor to the specified location without drawing.
         /// </summary>
         /// <param name="x">The x-coordinate to move to.</param>
         /// <param name="y">The y-coordinate to move to.</param>
-        void MoveTo(int x, int y);
+        public void MoveTo(int x, int y);
 
         /// <summary>
         /// Draws a line to the specified coordinates from the current position.
@@ -83,7 +82,7 @@ namespace C3624738
     /// <summary>
     /// Implements IGraphical to provide drawing operations.
     /// </summary>
-    class Graphical : IGraphical
+    public class Graphical : IGraphical
     {
         private Pen pen;
         protected List<Shape> shapes;

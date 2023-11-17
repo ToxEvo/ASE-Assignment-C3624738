@@ -1,6 +1,6 @@
 namespace C3624738
 {
-    class CommandParser 
+    public class CommandParser 
     {
         /// <summary>
         /// Responsible for rendering graphics based on commands.
@@ -35,11 +35,11 @@ namespace C3624738
             
             colors = new Dictionary<string, (int, int, int, int)>
             {
-                {"red", (255, 0, 0, 255)},
-                {"green", (0, 255, 0, 255)},
-                {"blue", (0, 0, 255, 255)},
-                {"black", (0, 0, 0, 255)},
-                {"white", (255, 255, 255, 255)}
+                {"red", (255, 255, 0, 0)},
+                {"green", (255, 0, 255, 0)},
+                {"blue", (255, 0, 0, 255)},
+                {"white", (255, 255, 255, 255)},
+                {"black", (255, 0, 0, 0)}
             };
         }
 
@@ -139,12 +139,12 @@ namespace C3624738
                 }
                 else
                 {
-                    throw new ArgumentException("Correct usage: 'pren color // pen draw x y'");
+                    throw new ArgumentException("Correct usage: 'pen color // pen draw x y'");
                 }
             }
             else
             {
-                throw new ArgumentException("Correct usage: 'pren color // pen draw x y'");
+                throw new ArgumentException("Correct usage: 'pen color // pen draw x y'");
             }
         }
 
@@ -295,8 +295,8 @@ namespace C3624738
             foreach (var line in lines)
             {
                 ParseCommand(line.Trim());
+                graphicsBox.Refresh();
             }
-            graphicsBox.Refresh();
         }
     }
 }

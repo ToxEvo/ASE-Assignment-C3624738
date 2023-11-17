@@ -3,7 +3,7 @@ namespace C3624738
     /// <summary>
     /// Represents a line that can be drawn on a graphics surface with a specified color and width.
     /// </summary>
-    class Line : Shape
+    public class Line : Shape
     {
         /// <summary>
         /// Gets the starting point of the line.
