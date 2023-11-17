@@ -83,7 +83,6 @@ namespace C3624738.Tests
         public void CommandParser_LoadsCommandsFromFileAndExecutes()
         {
             // Arrange
-
             string tempFilePath = "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\TempFile\\test2.txt";
             string[] commandsToLoad = { "pen blue", "rectangle 100 200" };
             File.WriteAllLines(tempFilePath, commandsToLoad);
