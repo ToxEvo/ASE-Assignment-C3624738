@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "O6T0lZpyoMKsuhmLU+kJB38dV8bwdO6FDa2Kk54//lS23BXjKiqVrskVTpJMBipBUPRY8DjkfMHyEdVkFZOjNA==",
+  "dgSpecHash": "a7I5KZhqSYoG34E8oUivCnupBcibaN1N0xBZxHa1pCnqqynBOdn6QhykZK2JI4+Y8cgLRzeB8YMMAPK/BP12nw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\C3624738Tests.csproj",
+  "projectFilePath": "C:\\Users\\toxev\\source\\repos\\ASE-Assignment-C3624738\\C3624738Tests\\C3624738Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\toxev\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\toxev\\.nuget\\packages\\coverlet.collector\\3.2.0\\coverlet.collector.3.2.0.nupkg.sha512",

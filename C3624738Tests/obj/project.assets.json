@@ -2463,9 +2463,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\C3624738Tests.csproj",
+      "projectUniqueName": "C:\\Users\\toxev\\source\\repos\\ASE-Assignment-C3624738\\C3624738Tests\\C3624738Tests.csproj",
       "projectName": "C3624738Tests",
-      "projectPath": "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\C3624738Tests.csproj",
+      "projectPath": "C:\\Users\\toxev\\source\\repos\\ASE-Assignment-C3624738\\C3624738Tests\\C3624738Tests.csproj",
       "packagesPath": "C:\\Users\\toxev\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\obj\\",
       "projectStyle": "PackageReference",
@@ -2489,8 +2489,8 @@
         "net7.0-windows7.0": {
           "targetAlias": "net7.0-windows",
           "projectReferences": {
-            "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj": {
-              "projectPath": "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj"
+            "C:\\Users\\toxev\\source\\repos\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj": {
+              "projectPath": "C:\\Users\\toxev\\source\\repos\\ASE-Assignment-C3624738\\C3624738\\C3624738.csproj"
             }
           }
         }
