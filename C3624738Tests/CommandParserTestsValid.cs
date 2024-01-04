@@ -10,6 +10,9 @@ using Moq;
 
 namespace C3624738.Tests
 {
+    /// <summary>
+    /// Represents a class for testing the CommandParser class with valid commands.
+    /// </summary>
     [TestClass()]
     public class CommandParserTestsValid
     {
@@ -17,6 +20,9 @@ namespace C3624738.Tests
         private Mock<PictureBox> mockPictureBox;
         private CommandParser commandParser;
 
+        /// <summary> 
+        /// Sets up the test environment before each test method is executed.
+        /// </summary>
         [TestInitialize]
         public void SetUp()
         {
@@ -26,6 +32,9 @@ namespace C3624738.Tests
             commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
         }
 
+        /// <summary>
+        /// Tests the ParseCommand method to ensure it executes the PenColorCommand correctly.
+        /// </summary>
         [TestMethod()]
         public void ParseCommand_ExecutesPenColorCommandCorrectly()
         {
@@ -37,6 +46,9 @@ namespace C3624738.Tests
                 c.Item1 == 255 && c.Item2 == 255 && c.Item3 == 0 && c.Item4 == 0)), Times.Once);
         }
 
+        /// <summary>
+        /// Tests the ParseHandler method to ensure it executes multiple commands on run.
+        /// </summary>
         [TestMethod()]
         public void ParseHandler_ExecutesMultipleCommandsOnRun()
         {
@@ -61,6 +73,9 @@ namespace C3624738.Tests
             mockPictureBox.Verify(g => g.Refresh(), Times.Exactly(6));
         }
 
+        /// <summary>
+        /// Tests the CommandParser class to ensure it saves commands to a file correctly.
+        /// </summary>
         [TestMethod]
         public void CommandParser_SavesCommandsToFile()
         {
@@ -80,6 +95,9 @@ namespace C3624738.Tests
             CollectionAssert.AreEqual(commandsToSave, savedCommands);
         }
 
+        /// <summary>
+        /// Tests the CommandParser class to ensure it loads commands from a file and executes them correctly.
+        /// </summary>
         [TestMethod]
         public void CommandParser_LoadsCommandsFromFileAndExecutes()
         {
@@ -100,6 +118,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), 100, 200), Times.Once);
         }
 
+        /// <summary>
+        /// Tests the ParseCommand method to ensure it executes the PositionPenCommand correctly.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_ExecutesPositionPenCommandCorrectly()
         {
@@ -114,6 +135,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.SetCoords(expectedX, expectedY), Times.Once);
         }
 
+        /// <summary>
+        /// Tests the ParseCommand method to ensure it executes the PenDrawCommand correctly.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_ExecutesPenDrawCommandCorrectly()
         {
@@ -128,6 +152,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.DrawTo(expectedX, expectedY), Times.Once);
         }
 
+        /// <summary>
+        /// Tests the ParseCommand method to ensure it executes the ClearCommand correctly.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_ExecutesClearCommandCorrectly()
         {
@@ -138,6 +165,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.Clear(), Times.Once);
         }
 
+        /// <summary>
+        /// Tests the ParseCommand method to ensure it executes the ResetCommand correctly.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_ExecutesResetCommandCorrectly()
         {
@@ -148,6 +178,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.SetCoords(0, 0), Times.Once);
         }
 
+        /// <summary>
+        /// Tests the ParseCommand method to ensure it executes the RectangleCommand correctly.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_ExecutesRectangleCommandCorrectly()
         {
@@ -163,6 +196,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.Rectangle(initialPosition.Item1, initialPosition.Item2, expectedWidth, expectedHeight), Times.Once);
         }
 
+        /// <summary>
+        /// Tests the ParseCommand method to ensure it executes the CircleCommand correctly.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_ExecutesCircleCommandCorrectly()
         {
@@ -179,6 +215,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.Circle(initialPosition.Item1, initialPosition.Item2, expectedRadius), Times.Once);
         }
 
+        /// <summary>
+        /// Tests the ParseCommand method to ensure it executes the FillOnCommand correctly.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_ExecutesFillOnCommandCorrectly()
         {
@@ -189,6 +228,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.SetFill(true), Times.Once);
         }
 
+        /// <summary>
+        /// Tests the ParseCommand method to ensure it executes the FillOffCommand correctly.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_ExecutesFillOffCommandCorrectly()
         {
