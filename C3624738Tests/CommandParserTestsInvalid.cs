@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace C3624738.Tests
 {
+    /// <summary>
+    /// Tests for the CommandParser class with invalid commands.
+    /// </summary>
     [TestClass()]
     public class CommandParserTestsInvalid
     {
@@ -26,6 +29,9 @@ namespace C3624738.Tests
             commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
         }
 
+        /// <summary>
+        /// Test for catching an exception when an invalid command "crcle" is parsed.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_CatchesExceptionForInvalidCommand_Crcle()
         {
@@ -41,6 +47,9 @@ namespace C3624738.Tests
             }
         }
 
+        /// <summary>
+        /// Test for catching an exception when an invalid command "movto" is parsed.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_CatchesExceptionForInvalidCommand_Movto()
         {
@@ -56,6 +65,9 @@ namespace C3624738.Tests
             }
         }
 
+        /// <summary>
+        /// Test for catching an ArgumentException when the "circle" command is parsed with invalid parameters.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_CatchesArgumentExceptionForCircleWithInvalidParameters()
         {
@@ -71,6 +83,9 @@ namespace C3624738.Tests
             }
         }
 
+        /// <summary>
+        /// Test for catching an ArgumentException when the "pen draw" command is parsed with too few parameters.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_CatchesArgumentExceptionForMovetoWithTooFewParameters()
         {
@@ -86,6 +101,9 @@ namespace C3624738.Tests
             }
         }
 
+        /// <summary>
+        /// Test for catching an ArgumentException when the "pen draw" command is parsed with too many parameters.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_CatchesArgumentExceptionForDrawtoWithTooManyParameters()
         {
