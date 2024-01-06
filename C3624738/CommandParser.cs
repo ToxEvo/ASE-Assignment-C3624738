@@ -59,6 +59,8 @@ namespace C3624738
             throw new ArgumentException($"The color '{color}' is not defined.");
         }
 
+        private readonly Dictionary<string, int> variables = new Dictionary<string, int>();
+
         /// <summary>
         /// Parses the input command and executes the corresponding graphical operation.
         /// </summary>
@@ -70,14 +72,21 @@ namespace C3624738
             // Trim and convert command to lowercase for checking against 'save' and 'load'
             string trimmedCommand = command.Trim().ToLower();
 
-            // Avoid adding 'save' and 'load' commands to history to prevent recursion or redundant saving/loading
-            if (!(trimmedCommand.StartsWith("save") || trimmedCommand.StartsWith("load")))
+            if (trimmedCommand.Contains("="))
             {
-                commandHistory.Add(command); // Add original command, not the trimmed/lowercase version
+                HandleVariableDeclaration(trimmedCommand); // Ensure variable names are handled in lowercase
+                return;
             }
 
-            // Split the command into parts
+            // Replace variables after splitting the command
             var commands = trimmedCommand.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < commands.Length; i++)
+            {
+                if (variables.ContainsKey(commands[i]))
+                {
+                    commands[i] = variables[commands[i]].ToString();
+                }
+            }
 
             try
             {
@@ -120,6 +129,19 @@ namespace C3624738
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void HandleVariableDeclaration(string command)
+        {
+            var parts = command.Split('=');
+            if (parts.Length == 2 && int.TryParse(parts[1].Trim(), out int value))
+            {
+                variables[parts[0].Trim()] = value;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid variable assignment");
             }
         }
 
