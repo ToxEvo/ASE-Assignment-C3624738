@@ -129,6 +129,7 @@ namespace C3624738
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            graphicsBox.Refresh();
         }
 
         private void HandleVariableDeclaration(string command)
@@ -324,7 +325,7 @@ namespace C3624738
             bool inLoop = false, inIf = false;
             int loopCount = 0;
             string ifCondition = "";
-            List<string> loopCommands = new List<string>();
+            List<string> commandsToExecute = new List<string>();
             List<string> ifCommands = new List<string>();
 
             foreach (var line in lines)
@@ -338,55 +339,58 @@ namespace C3624738
                         inLoop = false;
                         for (int i = 0; i < loopCount; i++)
                         {
-                            foreach (var cmd in loopCommands)
+                            foreach (var cmd in commandsToExecute)
                             {
-                                ParseCommand(cmd); // Execute each command in the loop
+                                ParseCommand(cmd);
                             }
                         }
-                        loopCommands.Clear();
+                        commandsToExecute.Clear();
                     }
-                    else
+                    else if (trimmedLine.StartsWith("if"))
                     {
-                        loopCommands.Add(line); // Accumulate loop commands
+                        inIf = true;
+                        ifCondition = ExtractCondition(trimmedLine);
+                        ifCommands.Clear(); // Clear previous if commands
                     }
-                }
-                else if (inIf)
-                {
-                    if (trimmedLine == "endif")
+                    else if (trimmedLine == "endif" && inIf)
                     {
                         inIf = false;
                         if (EvaluateCondition(ifCondition))
                         {
-                            foreach (var cmd in ifCommands)
-                            {
-                                ParseCommand(cmd); // Execute each command in the if block
-                            }
+                            commandsToExecute.AddRange(ifCommands); // Add if commands to execute in loop
                         }
                         ifCommands.Clear();
                     }
                     else
                     {
-                        ifCommands.Add(line); // Accumulate if commands
+                        if (inIf)
+                        {
+                            ifCommands.Add(line);
+                        }
+                        else
+                        {
+                            commandsToExecute.Add(line); // Add loop commands
+                        }
                     }
                 }
                 else if (trimmedLine.StartsWith("loop"))
                 {
                     inLoop = true;
                     loopCount = GetLoopCount(trimmedLine);
+                    commandsToExecute.Clear(); // Clear previous loop commands
                 }
-                else if (trimmedLine.StartsWith("if"))
+                else if (!inIf)
                 {
-                    inIf = true;
-                    ifCondition = ExtractCondition(trimmedLine);
-                }
-                else
-                {
-                    ParseCommand(trimmedLine); // Execute non-loop, non-if commands
+                    ParseCommand(trimmedLine); // Execute outside loop or if
                 }
 
-                graphicsBox.Refresh();
+                if (!inLoop && !inIf)
+                {
+                    graphicsBox.Refresh();
+                }
             }
         }
+
 
 
         private int GetLoopCount(string loopCommand)
