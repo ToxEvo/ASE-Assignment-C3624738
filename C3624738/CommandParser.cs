@@ -1,12 +1,14 @@
+using System.Data;
+
 namespace C3624738
 {
-    public class CommandParser 
+    public class CommandParser
     {
         /// <summary>
         /// Responsible for rendering graphics based on commands.
         /// </summary>
         private readonly IGraphical graphicsGen;
-        
+
         /// <summary>
         /// The PictureBox control where graphics are displayed.
         /// </summary>
@@ -32,7 +34,7 @@ namespace C3624738
         {
             this.graphicsGen = graphicsGen ?? throw new ArgumentNullException(nameof(graphicsGen));
             this.graphicsBox = graphicsBox ?? throw new ArgumentNullException(nameof(graphicsBox));
-            
+
             colors = new Dictionary<string, (int, int, int, int)>
             {
                 {"red", (255, 255, 0, 0)},
@@ -135,14 +137,28 @@ namespace C3624738
         private void HandleVariableDeclaration(string command)
         {
             var parts = command.Split('=');
-            if (parts.Length == 2 && int.TryParse(parts[1].Trim(), out int value))
+            if (parts.Length == 2)
             {
+                int value = EvaluateExpression(parts[1].Trim());
                 variables[parts[0].Trim()] = value;
             }
             else
             {
                 throw new ArgumentException("Invalid variable assignment");
             }
+        }
+
+        private int EvaluateExpression(string expression)
+        {
+            // Replacing variables with their values
+            foreach (var variable in variables)
+            {
+                expression = expression.Replace(variable.Key, variable.Value.ToString());
+            }
+
+            // Evaluating the expression (basic implementation, can be improved)
+            var result = new DataTable().Compute(expression, null);
+            return Convert.ToInt32(result);
         }
 
         /// <summary>
@@ -192,8 +208,8 @@ namespace C3624738
         /// <param name="commands">The command arguments where the first is the command name, followed by width and height.</param>
         private void ExecuteRectangleCommand(string[] commands)
         {
-            if (commands.Length != 3 || 
-                !int.TryParse(commands[1], out int width) || 
+            if (commands.Length != 3 ||
+                !int.TryParse(commands[1], out int width) ||
                 !int.TryParse(commands[2], out int height))
                 throw new ArgumentException("Correct usage: 'rectangle width height'");
 
@@ -233,7 +249,7 @@ namespace C3624738
                 throw new ArgumentException("Correct usage: 'position pen x y'");
             if (!int.TryParse(commands[2], out int posX) || !int.TryParse(commands[3], out int posY))
                 throw new ArgumentException("Correct usage: 'position pen x y'");
-            
+
             graphicsGen.SetCoords(posX, posY);
         }
 
