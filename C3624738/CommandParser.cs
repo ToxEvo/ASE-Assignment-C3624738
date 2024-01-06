@@ -121,9 +121,6 @@ namespace C3624738
                     case "load":
                         ExecuteLoadCommand(commands);
                         break;
-                    case "loop":
-                        ExecuteRepeatCommand(commands);
-                        break;
                     default:
                         throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
                 }
@@ -308,11 +305,6 @@ namespace C3624738
             graphicsGen.SetCoords(0, 0);
         }
 
-        /// <summary>
-        /// Handles parsing of a single line command or multiple lines of commands.
-        /// </summary>
-        /// <param name="line">The single line command to parse, or "run" to execute multiple commands.</param>
-        /// <param name="syntax">The multi-line syntax containing commands to execute.</param>
         public void ParseHandler(string line, string syntax)
         {
             if (line == "run")
@@ -326,32 +318,71 @@ namespace C3624738
             graphicsBox.Refresh();
         }
 
-        /// <summary>
-        /// Parses and executes multiple lines of commands.
-        /// </summary>
-        /// <param name="syntax">The multi-line syntax containing commands to execute.</param>
         public void ParseMultiple(string syntax)
         {
             var lines = syntax.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> loopCommands = new List<string>();
+            bool inLoop = false;
+            int loopCount = 0;
+
             foreach (var line in lines)
             {
-                ParseCommand(line.Trim());
+                if (line.Trim().ToLower().StartsWith("loop"))
+                {
+                    inLoop = true;
+                    loopCommands.Clear();
+                    loopCount = GetLoopCount(line); // Extract the loop count
+                }
+                else if (line.Trim().ToLower() == "endloop" && inLoop)
+                {
+                    inLoop = false;
+                    for (int i = 0; i < loopCount; i++)
+                    {
+                        ExecuteLoopCommands(loopCommands);
+                    }
+                }
+                else if (inLoop)
+                {
+                    loopCommands.Add(line);
+                }
+                else
+                {
+                    ParseCommand(line.Trim());
+                }
+
                 graphicsBox.Refresh();
             }
         }
 
-        private void ExecuteRepeatCommand(string[] commands)
+        private int GetLoopCount(string loopCommand)
         {
-            if (commands.Length < 3)
-                throw new ArgumentException("Correct usage: 'repeat [number] [command]'");
-
-            if (!int.TryParse(commands[1], out int repetitions))
-                throw new ArgumentException("Number of repetitions must be an integer");
-
-            string commandToRepeat = string.Join(" ", commands.Skip(2));
-            for (int i = 0; i < repetitions; i++)
+            // Extract the loop count or variable from the loop command
+            string[] parts = loopCommand.Split(' ');
+            if (parts.Length < 2)
             {
-                ParseCommand(commandToRepeat);
+                throw new ArgumentException("Invalid loop syntax. Usage: loop [count]");
+            }
+
+            string loopCountStr = parts[1];
+            if (int.TryParse(loopCountStr, out int loopCount))
+            {
+                return loopCount;
+            }
+            else if (variables.TryGetValue(loopCountStr, out loopCount))
+            {
+                return loopCount;
+            }
+            else
+            {
+                throw new ArgumentException("Loop count must be a number or a defined variable");
+            }
+        }
+
+        private void ExecuteLoopCommands(List<string> loopCommands)
+        {
+            foreach (var command in loopCommands)
+            {
+                ParseCommand(command);
             }
         }
     }
