@@ -110,6 +110,9 @@ namespace C3624738
                     case "load":
                         ExecuteLoadCommand(commands);
                         break;
+                    case "loop":
+                        ExecuteRepeatCommand(commands);
+                        break;
                     default:
                         throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
                 }
@@ -296,6 +299,21 @@ namespace C3624738
             {
                 ParseCommand(line.Trim());
                 graphicsBox.Refresh();
+            }
+        }
+
+        private void ExecuteRepeatCommand(string[] commands)
+        {
+            if (commands.Length < 3)
+                throw new ArgumentException("Correct usage: 'repeat [number] [command]'");
+
+            if (!int.TryParse(commands[1], out int repetitions))
+                throw new ArgumentException("Number of repetitions must be an integer");
+
+            string commandToRepeat = string.Join(" ", commands.Skip(2));
+            for (int i = 0; i < repetitions; i++)
+            {
+                ParseCommand(commandToRepeat);
             }
         }
     }
