@@ -321,38 +321,73 @@ namespace C3624738
         public void ParseMultiple(string syntax)
         {
             var lines = syntax.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            List<string> loopCommands = new List<string>();
-            bool inLoop = false;
+            bool inLoop = false, inIf = false;
             int loopCount = 0;
+            string ifCondition = "";
+            List<string> loopCommands = new List<string>();
+            List<string> ifCommands = new List<string>();
 
             foreach (var line in lines)
             {
-                if (line.Trim().ToLower().StartsWith("loop"))
+                string trimmedLine = line.Trim().ToLower();
+
+                if (inLoop)
                 {
-                    inLoop = true;
-                    loopCommands.Clear();
-                    loopCount = GetLoopCount(line); // Extract the loop count
-                }
-                else if (line.Trim().ToLower() == "endloop" && inLoop)
-                {
-                    inLoop = false;
-                    for (int i = 0; i < loopCount; i++)
+                    if (trimmedLine == "endloop")
                     {
-                        ExecuteLoopCommands(loopCommands);
+                        inLoop = false;
+                        for (int i = 0; i < loopCount; i++)
+                        {
+                            foreach (var cmd in loopCommands)
+                            {
+                                ParseCommand(cmd); // Execute each command in the loop
+                            }
+                        }
+                        loopCommands.Clear();
+                    }
+                    else
+                    {
+                        loopCommands.Add(line); // Accumulate loop commands
                     }
                 }
-                else if (inLoop)
+                else if (inIf)
                 {
-                    loopCommands.Add(line);
+                    if (trimmedLine == "endif")
+                    {
+                        inIf = false;
+                        if (EvaluateCondition(ifCondition))
+                        {
+                            foreach (var cmd in ifCommands)
+                            {
+                                ParseCommand(cmd); // Execute each command in the if block
+                            }
+                        }
+                        ifCommands.Clear();
+                    }
+                    else
+                    {
+                        ifCommands.Add(line); // Accumulate if commands
+                    }
+                }
+                else if (trimmedLine.StartsWith("loop"))
+                {
+                    inLoop = true;
+                    loopCount = GetLoopCount(trimmedLine);
+                }
+                else if (trimmedLine.StartsWith("if"))
+                {
+                    inIf = true;
+                    ifCondition = ExtractCondition(trimmedLine);
                 }
                 else
                 {
-                    ParseCommand(line.Trim());
+                    ParseCommand(trimmedLine); // Execute non-loop, non-if commands
                 }
 
                 graphicsBox.Refresh();
             }
         }
+
 
         private int GetLoopCount(string loopCommand)
         {
@@ -385,5 +420,41 @@ namespace C3624738
                 ParseCommand(command);
             }
         }
+
+        private void ParseIfStatement(string[] lines, ref int index)
+        {
+            string condition = ExtractCondition(lines[index]);
+            index++; // Move to the next line, which is the start of the if block
+
+            List<string> ifBlockCommands = new List<string>();
+            while (!lines[index].Trim().ToLower().Equals("endif"))
+            {
+                ifBlockCommands.Add(lines[index]);
+                index++;
+            }
+
+            if (EvaluateCondition(condition))
+            {
+                foreach (var command in ifBlockCommands)
+                {
+                    ParseCommand(command); // Assuming you have a method to parse individual commands
+                }
+            }
+
+            index++; // Skip the 'endif' line
+        }
+
+        private string ExtractCondition(string line)
+        {
+            return line.Substring(3).Trim(); // Extracts the condition part after 'if'
+        }
+
+        private bool EvaluateCondition(string condition)
+        {
+            // Implement the logic to evaluate the condition
+            // This is a placeholder, actual implementation will depend on how you want to evaluate
+            return Convert.ToBoolean(EvaluateExpression(condition)); // Use your existing EvaluateExpression method
+        }
+
     }
 }
