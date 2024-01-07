@@ -2467,7 +2467,7 @@
       "projectName": "C3624738Tests",
       "projectPath": "C:\\Users\\toxev\\source\\repos\\ASE-Assignment-C3624738\\C3624738Tests\\C3624738Tests.csproj",
       "packagesPath": "C:\\Users\\toxev\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\obj\\",
+      "outputPath": "C:\\Users\\toxev\\source\\repos\\ASE-Assignment-C3624738\\C3624738Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

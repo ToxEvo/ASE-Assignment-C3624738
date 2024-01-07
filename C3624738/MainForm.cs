@@ -5,24 +5,14 @@ namespace C3624738
     /// </summary>
     public partial class MainForm : Form
     {
-        /// <summary>
-        /// The instance responsible for generating graphical content.
-        /// </summary>
         private Graphical graphicalGen;
-
-        /// <summary>
-        /// The parser that interprets and processes drawing commands.
-        /// </summary>
         private CommandParser parser;
 
-        /// <summary>
-        /// Initializes a new instance of the MainForm class.
-        /// </summary>
-        public MainForm()
+        // Update the constructor to accept Graphical instance
+        public MainForm(Graphical sharedGraphicalGen)
         {
-            // Initialize the form's components and setup the graphics generator and command parser.
             InitializeComponent();
-            graphicalGen = new Graphical();
+            this.graphicalGen = sharedGraphicalGen; // Use the shared instance
             parser = new CommandParser(graphicalGen, graphicsBox);
             SetupGraphicsBox();
         }
