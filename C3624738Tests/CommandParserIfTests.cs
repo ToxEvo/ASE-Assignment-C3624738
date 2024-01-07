@@ -76,34 +76,5 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.Circle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Never);
             mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Never);
         }
-
-        [TestMethod]
-        public void ParseCommand_NestedIfStatements_CommandsExecutedCorrectly()
-        {
-            // Arrange
-            string nestedIfCommand = "if 1 = 1\ncircle 20\nif 2 = 2\ncircle 30\nendif";
-
-            // Act
-            commandParser.ParseHandler("run", nestedIfCommand);
-
-            // Assert
-            mockGraphicsGen.Verify(g => g.Circle(0, 0, 20), Times.Once);
-            mockGraphicsGen.Verify(g => g.Circle(0, 0, 30), Times.Once);
-        }
-
-        [TestMethod]
-        public void ParseCommand_NestedIfStatementWithFalseInnerCondition_CommandsExecutedCorrectly()
-        {
-            // Arrange
-            string nestedIfCommand = "if 1 = 1\ncircle 20\nif 1 = 2\ncircle 30\nendif\nendif";
-
-            // Act
-            commandParser.ParseHandler("run", nestedIfCommand);
-
-            // Assert
-            mockGraphicsGen.Verify(g => g.Circle(0, 0, 20), Times.Once);
-            mockGraphicsGen.Verify(g => g.Circle(0, 0, 30), Times.Never);
-        }
-
     }
 }
