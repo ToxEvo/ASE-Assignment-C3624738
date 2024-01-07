@@ -61,14 +61,15 @@ namespace C3624738
             throw new ArgumentException($"The color '{color}' is not defined.");
         }
 
+        /// <summary>
+        /// Dictionary holding variables and their values values.
+        /// </summary>
         private readonly Dictionary<string, int> variables = new Dictionary<string, int>();
 
         /// <summary>
-        /// Parses the input command and executes the corresponding graphical operation.
+        /// Parses the given command and executes the corresponding action.
         /// </summary>
         /// <param name="command">The command to parse and execute.</param>
-        /// <exception cref="InvalidOperationException">Thrown when the command is unrecognized.</exception>
-        /// <exception cref="ArgumentException">Thrown when the command arguments are invalid.</exception>
         public void ParseCommand(string command)
         {
             // Trim and convert command to lowercase for checking against 'save' and 'load'
@@ -129,9 +130,13 @@ namespace C3624738
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            graphicsBox.Refresh();
         }
 
+        /// <summary>
+        /// Handles the declaration of variables and evaluates expressions.
+        /// </summary>
+        /// <param name="command">The variable declaration command.</param>
+        /// <exception cref="ArgumentException">Thrown when the variable assignment is invalid.</exception>
         private void HandleVariableDeclaration(string command)
         {
             var parts = command.Split('=');
@@ -146,6 +151,11 @@ namespace C3624738
             }
         }
 
+        /// <summary>
+        /// Evaluates the given expression by replacing variables with their values and computing the result.
+        /// </summary>
+        /// <param name="expression">The expression to evaluate.</param>
+        /// <returns>The result of the evaluated expression.</returns>
         private int EvaluateExpression(string expression)
         {
             // Replacing variables with their values
@@ -306,6 +316,16 @@ namespace C3624738
             graphicsGen.SetCoords(0, 0);
         }
 
+        /// <summary>
+        /// Handles the parsing of a single line or multiple lines of syntax.
+        /// </summary>
+        /// <remarks>
+        /// This method determines whether to parse a single command or multiple commands based on the input.
+        /// If the line is 'run', it parses multiple lines of syntax using the 'ParseMultiple' method.
+        /// Otherwise, it parses a single command using the 'ParseCommand' method.
+        /// </remarks>
+        /// <param name="line">The line of syntax to be parsed. If this is 'run', multiple lines of syntax will be parsed.</param>
+        /// <param name="syntax">The complete syntax to be parsed when 'run' is specified. Ignored for single line commands.</param>
         public void ParseHandler(string line, string syntax)
         {
             if (line == "run")
@@ -319,13 +339,17 @@ namespace C3624738
             graphicsBox.Refresh();
         }
 
+        /// <summary>
+        /// Parses multiple commands based on the given syntax.
+        /// </summary>
+        /// <param name="syntax">The syntax containing multiple commands.</param>
         public void ParseMultiple(string syntax)
         {
             var lines = syntax.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             bool inLoop = false, inIf = false;
             int loopCount = 0;
             string ifCondition = "";
-            List<string> commandsToExecute = new List<string>();
+            List<string> loopCommands = new List<string>();
             List<string> ifCommands = new List<string>();
 
             foreach (var line in lines)
@@ -339,60 +363,62 @@ namespace C3624738
                         inLoop = false;
                         for (int i = 0; i < loopCount; i++)
                         {
-                            foreach (var cmd in commandsToExecute)
+                            foreach (var cmd in loopCommands)
                             {
-                                ParseCommand(cmd);
+                                ParseCommand(cmd); // Execute each command in the loop
                             }
                         }
-                        commandsToExecute.Clear();
+                        loopCommands.Clear();
                     }
-                    else if (trimmedLine.StartsWith("if"))
+                    else
                     {
-                        inIf = true;
-                        ifCondition = ExtractCondition(trimmedLine);
-                        ifCommands.Clear(); // Clear previous if commands
+                        loopCommands.Add(line); // Accumulate loop commands
                     }
-                    else if (trimmedLine == "endif" && inIf)
+                }
+                else if (inIf)
+                {
+                    if (trimmedLine == "endif")
                     {
                         inIf = false;
                         if (EvaluateCondition(ifCondition))
                         {
-                            commandsToExecute.AddRange(ifCommands); // Add if commands to execute in loop
+                            foreach (var cmd in ifCommands)
+                            {
+                                ParseCommand(cmd); // Execute each command in the if block
+                            }
                         }
                         ifCommands.Clear();
                     }
                     else
                     {
-                        if (inIf)
-                        {
-                            ifCommands.Add(line);
-                        }
-                        else
-                        {
-                            commandsToExecute.Add(line); // Add loop commands
-                        }
+                        ifCommands.Add(line); // Accumulate if commands
                     }
                 }
                 else if (trimmedLine.StartsWith("loop"))
                 {
                     inLoop = true;
                     loopCount = GetLoopCount(trimmedLine);
-                    commandsToExecute.Clear(); // Clear previous loop commands
                 }
-                else if (!inIf)
+                else if (trimmedLine.StartsWith("if"))
                 {
-                    ParseCommand(trimmedLine); // Execute outside loop or if
+                    inIf = true;
+                    ifCondition = ExtractCondition(trimmedLine);
+                }
+                else
+                {
+                    ParseCommand(trimmedLine); // Execute non-loop, non-if commands
                 }
 
-                if (!inLoop && !inIf)
-                {
-                    graphicsBox.Refresh();
-                }
+                graphicsBox.Refresh();
             }
         }
 
 
-
+        /// <summary>
+        /// Extracts the loop count or variable from the loop command.
+        /// </summary>
+        /// <param name="loopCommand">The loop command.</param>
+        /// <returns>The loop count.</returns>
         private int GetLoopCount(string loopCommand)
         {
             // Extract the loop count or variable from the loop command
@@ -417,47 +443,24 @@ namespace C3624738
             }
         }
 
-        private void ExecuteLoopCommands(List<string> loopCommands)
-        {
-            foreach (var command in loopCommands)
-            {
-                ParseCommand(command);
-            }
-        }
-
-        private void ParseIfStatement(string[] lines, ref int index)
-        {
-            string condition = ExtractCondition(lines[index]);
-            index++; // Move to the next line, which is the start of the if block
-
-            List<string> ifBlockCommands = new List<string>();
-            while (!lines[index].Trim().ToLower().Equals("endif"))
-            {
-                ifBlockCommands.Add(lines[index]);
-                index++;
-            }
-
-            if (EvaluateCondition(condition))
-            {
-                foreach (var command in ifBlockCommands)
-                {
-                    ParseCommand(command); // Assuming you have a method to parse individual commands
-                }
-            }
-
-            index++; // Skip the 'endif' line
-        }
-
+        /// <summary>
+        /// Extracts the condition part after 'if'.
+        /// </summary>
+        /// <param name="line">The line containing the condition.</param>
+        /// <returns>The extracted condition.</returns>
         private string ExtractCondition(string line)
         {
-            return line.Substring(3).Trim(); // Extracts the condition part after 'if'
+            return line.Substring(3).Trim();
         }
 
+        /// <summary>
+        /// Evaluates the given condition and returns the result.
+        /// </summary>
+        /// <param name="condition">The condition to evaluate.</param>
+        /// <returns>The result of the evaluation.</returns>
         private bool EvaluateCondition(string condition)
         {
-            // Implement the logic to evaluate the condition
-            // This is a placeholder, actual implementation will depend on how you want to evaluate
-            return Convert.ToBoolean(EvaluateExpression(condition)); // Use your existing EvaluateExpression method
+            return Convert.ToBoolean(EvaluateExpression(condition));
         }
 
     }

@@ -1,2 +1,0 @@
-pen red
-circle 50
