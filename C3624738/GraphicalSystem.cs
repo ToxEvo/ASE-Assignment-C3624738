@@ -89,6 +89,13 @@ namespace C3624738
         protected bool fill;
         protected (int x, int y) penCoords;
 
+        public event Action GraphicsUpdated;
+
+        protected void OnGraphicsUpdated()
+        {
+            GraphicsUpdated?.Invoke();
+        }
+
         /// <summary>
         /// Initializes a new instance of the Graphical class with default settings.
         /// </summary>
@@ -130,6 +137,7 @@ namespace C3624738
         {
             // Set the pen color using the Color.FromArgb method to convert ARGB values to a Color object.
             pen.Color = Color.FromArgb(color.alpha, color.red, color.green, color.blue);
+            OnGraphicsUpdated();
         }
 
         /// <summary>
@@ -154,6 +162,7 @@ namespace C3624738
             // Create a new Circle object and add it to the list of shapes.
             Circle circle = new Circle(pen.Color, x, y, pen.Width, fill, radius);
             shapes.Add(circle);
+            OnGraphicsUpdated();
         }
 
         /// <summary>
@@ -163,6 +172,7 @@ namespace C3624738
         {
             // Remove all shapes from the list.
             shapes.Clear();
+            OnGraphicsUpdated();
         }
 
         /// <summary>
@@ -183,6 +193,7 @@ namespace C3624738
         {
             // Update the fill status.
             this.fill = fill;
+            OnGraphicsUpdated();
         }
 
         /// <summary>
@@ -204,6 +215,7 @@ namespace C3624738
         {
             // Update the current position of the pen.
             penCoords = (x, y);
+            OnGraphicsUpdated();
         }
 
         /// <summary>
@@ -215,6 +227,7 @@ namespace C3624738
         {
             // Set the current pen coordinates to the new location without drawing a line.
             penCoords = (x, y);
+            OnGraphicsUpdated();
         }
 
         /// <summary>
@@ -229,6 +242,7 @@ namespace C3624738
             // Create a new Rectangle object and add it to the list of shapes.
             Rectangle rect = new Rectangle(pen.Color, x, y, pen.Width, fill, width, height);
             shapes.Add(rect);
+            OnGraphicsUpdated();
         }
 
         /// <summary>
@@ -243,6 +257,7 @@ namespace C3624738
             shapes.Add(line);
             // Update the pen position after drawing the line.
             MoveTo(x, y);
+            OnGraphicsUpdated();
         }
     }
 }
