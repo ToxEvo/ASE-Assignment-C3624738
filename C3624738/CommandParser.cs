@@ -104,20 +104,21 @@ namespace C3624738
             // Define a new method
             if (trimmedCommand.StartsWith("method "))
             {
-                var match = Regex.Match(trimmedCommand, @"method (\w+)\s*\((.*?)\)");
+                var match = Regex.Match(trimmedCommand, @"method (\w+)\s*(?:\((.*?)\))?");
                 if (match.Success)
                 {
                     currentMethod = match.Groups[1].Value;
+                    var parameters = match.Groups[2].Value;
                     methods[currentMethod] = new MethodDefinition
                     {
-                        Parameters = match.Groups[2].Value.Split(' ').ToList()
+                        Parameters = string.IsNullOrEmpty(parameters) ? new List<string>() : parameters.Split(' ').ToList()
                     };
                 }
                 return;
             }
 
             // Call a defined method
-            var methodCallMatch = Regex.Match(trimmedCommand, @"(\w+)\s*\((.*?)\)");
+            var methodCallMatch = Regex.Match(trimmedCommand, @"(\w+)\s*(?:\((.*?)\))?");
             if (methodCallMatch.Success && methods.ContainsKey(methodCallMatch.Groups[1].Value))
             {
                 var methodName = methodCallMatch.Groups[1].Value;
@@ -186,24 +187,22 @@ namespace C3624738
         private void CallMethod(string methodName, List<string> args)
         {
             var method = methods[methodName];
-            if (args.Count != method.Parameters.Count)
-            {
-                throw new ArgumentException($"Incorrect number of arguments for method {methodName}");
-            }
 
-            // Store the original values of the variables
+            // Save the current state of variables
             var originalVariables = new Dictionary<string, int>(variables);
 
-            // Update variables with method parameters
-            for (int i = 0; i < args.Count; i++)
+            // Check if the method requires parameters
+            if (method.Parameters.Count > 0)
             {
-                if (int.TryParse(args[i], out int value))
+                if (args.Count != method.Parameters.Count)
                 {
-                    variables[method.Parameters[i]] = value;
+                    throw new ArgumentException($"Incorrect number of arguments for method {methodName}");
                 }
-                else
+
+                // Update variables with method parameters
+                for (int i = 0; i < args.Count; i++)
                 {
-                    throw new ArgumentException($"Invalid argument: {args[i]} for parameter {method.Parameters[i]}");
+                    variables[method.Parameters[i]] = int.Parse(args[i]);
                 }
             }
 
@@ -212,12 +211,13 @@ namespace C3624738
                 ParseCommand(cmd);
             }
 
-            // Restore the original values of the variables
+            // Restore the original state of variables
             foreach (var kvp in originalVariables)
             {
                 variables[kvp.Key] = kvp.Value;
             }
         }
+
 
         /// <summary>
         /// Handles the declaration of variables and evaluates expressions.
