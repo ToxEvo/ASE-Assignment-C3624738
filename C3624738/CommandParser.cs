@@ -1,9 +1,20 @@
 using System.Data;
+using System.Reflection.Metadata;
+using System.Text.RegularExpressions;
 
 namespace C3624738
 {
     public class CommandParser
     {
+        private Dictionary<string, MethodDefinition> methods = new Dictionary<string, MethodDefinition>();
+
+        private class MethodDefinition
+        {
+            public List<string> Commands { get; set; } = new List<string>();
+            public List<string> Parameters { get; set; } = new List<string>();
+        }
+
+
         /// <summary>
         /// Responsible for rendering graphics based on commands.
         /// </summary>
@@ -66,7 +77,6 @@ namespace C3624738
         /// </summary>
         private readonly Dictionary<string, int> variables = new Dictionary<string, int>();
 
-        private Dictionary<string, List<string>> methods = new Dictionary<string, List<string>>();
         private string currentMethod = null;
 
         /// <summary>
@@ -86,24 +96,33 @@ namespace C3624738
                 }
                 else
                 {
-                    methods[currentMethod].Add(command);
+                    methods[currentMethod].Commands.Add(command);
                 }
                 return;
             }
 
+            // Define a new method
             if (trimmedCommand.StartsWith("method "))
             {
-                currentMethod = trimmedCommand.Substring(7).Trim();
-                methods[currentMethod] = new List<string>();
+                var match = Regex.Match(trimmedCommand, @"method (\w+)\s*\((.*?)\)");
+                if (match.Success)
+                {
+                    currentMethod = match.Groups[1].Value;
+                    methods[currentMethod] = new MethodDefinition
+                    {
+                        Parameters = match.Groups[2].Value.Split(' ').ToList()
+                    };
+                }
                 return;
             }
 
-            if (methods.ContainsKey(trimmedCommand))
+            // Call a defined method
+            var methodCallMatch = Regex.Match(trimmedCommand, @"(\w+)\s*\((.*?)\)");
+            if (methodCallMatch.Success && methods.ContainsKey(methodCallMatch.Groups[1].Value))
             {
-                foreach (var methodCommand in methods[trimmedCommand])
-                {
-                    ParseCommand(methodCommand);
-                }
+                var methodName = methodCallMatch.Groups[1].Value;
+                var args = methodCallMatch.Groups[2].Value.Split(' ').ToList();
+                CallMethod(methodName, args);
                 return;
             }
 
@@ -161,6 +180,42 @@ namespace C3624738
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void CallMethod(string methodName, List<string> args)
+        {
+            var method = methods[methodName];
+            if (args.Count != method.Parameters.Count)
+            {
+                throw new ArgumentException($"Incorrect number of arguments for method {methodName}");
+            }
+
+            // Store the original values of the variables
+            var originalVariables = new Dictionary<string, int>(variables);
+
+            // Update variables with method parameters
+            for (int i = 0; i < args.Count; i++)
+            {
+                if (int.TryParse(args[i], out int value))
+                {
+                    variables[method.Parameters[i]] = value;
+                }
+                else
+                {
+                    throw new ArgumentException($"Invalid argument: {args[i]} for parameter {method.Parameters[i]}");
+                }
+            }
+
+            foreach (var cmd in method.Commands)
+            {
+                ParseCommand(cmd);
+            }
+
+            // Restore the original values of the variables
+            foreach (var kvp in originalVariables)
+            {
+                variables[kvp.Key] = kvp.Value;
             }
         }
 
