@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace C3624738.Tests
 {
+    /// <summary>
+    /// Class to test the CommandParser loops.
+    /// </summary>
     [TestClass]
     public class CommandParserLoopTests
     {
@@ -21,6 +24,9 @@ namespace C3624738.Tests
             commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
         }
 
+        /// <summary>
+        /// Test method for simple loop with integer as iterator and rectangle shape.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_SimpleLoop_RectangleCommandsExecutedCorrectly()
         {
@@ -35,6 +41,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.Circle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Never);
         }
 
+        /// <summary>
+        /// Test method for simple loop with integer as iterator and circle shape.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_SimpleLoop_CircleCommandsExecutedCorrectly()
         {
@@ -49,6 +58,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Never);
         }
 
+        /// <summary>
+        /// Test method for loops with variable as iterator and radius for circle.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_LoopWithVariable_CircleCommandsExecutedCorrectly()
         {
@@ -64,6 +76,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Never);
         }
 
+        /// <summary>
+        /// Test method for loops with variable as iterator.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_LoopWithVariable_CorrectNumberOfCircles()
         {

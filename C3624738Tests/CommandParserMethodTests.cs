@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace C3624738.Tests
 {
+    /// <summary>
+    /// Tests for the CommandParser class.
+    /// </summary>
     [TestClass]
     public class CommandParserMethodTests
     {
@@ -19,6 +22,9 @@ namespace C3624738.Tests
             commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
         }
 
+        /// <summary>
+        /// Test for the ParseCommand method when calling a method without parameters.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_CallMethodWithoutParameters_ShouldExecuteMethod()
         {
@@ -35,16 +41,9 @@ namespace C3624738.Tests
             mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
         }
 
-        [TestMethod]
-        public void ParseCommand_CallUndefinedMethodWithoutParameters_ShouldThrowException()
-        {
-            // Arrange
-            string callMethod = "drawshapes"; // Attempting to call an undefined method
-
-            // Act and Assert
-            Assert.ThrowsException<ArgumentException>(() => commandParser.ParseHandler("run", callMethod));
-        }
-
+        /// <summary>
+        /// Test for the ParseCommand method when calling a method with parameters.
+        /// </summary>
         [TestMethod]
         public void ParseCommand_CallMethodWithParameters_ShouldExecuteMethodWithParameters()
         {

@@ -54,3 +54,5 @@ C:\Users\toxev\Source\Repos\ASE-Assignment-C3624738C\C3624738\obj\Debug\net7.0-w
 C:\Users\toxev\Source\Repos\ASE-Assignment-C3624738C\C3624738\obj\Debug\net7.0-windows\C3624738.pdb
 C:\Users\toxev\Source\Repos\ASE-Assignment-C3624738C\C3624738\obj\Debug\net7.0-windows\C3624738.genruntimeconfig.cache
 C:\Users\toxev\Source\Repos\ASE-Assignment-C3624738C\C3624738\obj\Debug\net7.0-windows\ref\C3624738.dll
+C:\Users\toxev\source\repos\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.MainForm.resources
+C:\Users\toxev\source\repos\ASE-Assignment-C3624738\C3624738\obj\Debug\net7.0-windows\C3624738.csproj.GenerateResource.cache
