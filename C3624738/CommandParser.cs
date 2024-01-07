@@ -66,14 +66,46 @@ namespace C3624738
         /// </summary>
         private readonly Dictionary<string, int> variables = new Dictionary<string, int>();
 
+        private Dictionary<string, List<string>> methods = new Dictionary<string, List<string>>();
+        private string currentMethod = null;
+
         /// <summary>
         /// Parses the given command and executes the corresponding action.
         /// </summary>
         /// <param name="command">The command to parse and execute.</param>
         public void ParseCommand(string command)
         {
-            // Trim and convert command to lowercase for checking against 'save' and 'load'
             string trimmedCommand = command.Trim().ToLower();
+
+            // Handling method definition
+            if (currentMethod != null)
+            {
+                if (trimmedCommand == "endmethod")
+                {
+                    currentMethod = null;
+                }
+                else
+                {
+                    methods[currentMethod].Add(command);
+                }
+                return;
+            }
+
+            if (trimmedCommand.StartsWith("method "))
+            {
+                currentMethod = trimmedCommand.Substring(7).Trim();
+                methods[currentMethod] = new List<string>();
+                return;
+            }
+
+            if (methods.ContainsKey(trimmedCommand))
+            {
+                foreach (var methodCommand in methods[trimmedCommand])
+                {
+                    ParseCommand(methodCommand);
+                }
+                return;
+            }
 
             if (trimmedCommand.Contains("="))
             {
