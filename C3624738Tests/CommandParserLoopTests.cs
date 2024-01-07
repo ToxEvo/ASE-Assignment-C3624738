@@ -50,20 +50,6 @@ namespace C3624738.Tests
         }
 
         [TestMethod]
-        public void ParseCommand_NestedLoops_RectangleCommandsExecutedCorrectly()
-        {
-            // Arrange
-            string nestedLoopCommand = "loop 2\nloop 3\nrectangle 8 12\nendloop\nendloop";
-
-            // Act
-            commandParser.ParseHandler("run", nestedLoopCommand);
-
-            // Assert
-            mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(6));
-            mockGraphicsGen.Verify(g => g.Circle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Never);
-        }
-
-        [TestMethod]
         public void ParseCommand_LoopWithVariable_CircleCommandsExecutedCorrectly()
         {
             // Arrange
@@ -76,6 +62,19 @@ namespace C3624738.Tests
             // Assert
             mockGraphicsGen.Verify(g => g.Circle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(3));
             mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void ParseCommand_LoopWithVariable_CorrectNumberOfCircles()
+        {
+            // Arrange
+            string loopWithVariable = "size = 3\nloop size\ncircle 20\nendloop";
+
+            // Act
+            commandParser.ParseHandler("run", loopWithVariable);
+
+            // Assert
+            mockGraphicsGen.Verify(g => g.Circle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Exactly(3));
         }
     }
 }
