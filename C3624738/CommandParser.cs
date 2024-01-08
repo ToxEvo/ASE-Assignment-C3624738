@@ -174,6 +174,8 @@ namespace C3624738
                     case "load":
                         ExecuteLoadCommand(commands);
                         break;
+                    case "endloop":
+                        return;
                     default:
                         throw new InvalidOperationException($"Unrecognized command: {commands[0]}");
                 }
@@ -206,6 +208,7 @@ namespace C3624738
                 }
             }
 
+            // Execute each command in the method
             foreach (var cmd in method.Commands)
             {
                 ParseCommand(cmd);
@@ -627,7 +630,6 @@ namespace C3624738
                         {
                             foreach (var loopCommand in loopCommands)
                             {
-                                // Re-evaluate expressions for each iteration
                                 ParseCommand(loopCommand);
                             }
                         }
@@ -638,24 +640,23 @@ namespace C3624738
                         loopCommands.Add(line);
                     }
                 }
-                else if (inIf)
+                if (inIf)
                 {
                     if (trimmedLine == "endif")
                     {
                         inIf = false;
                         if (EvaluateCondition(ifCondition))
                         {
-                            foreach (var cmd in ifCommands)
+                            foreach (var ifCommand in ifCommands)
                             {
-                                ParseCommand(cmd); // Execute each command in the if block
-                                graphicsBox.Refresh();
+                                ParseCommand(ifCommand);
                             }
                         }
                         ifCommands.Clear();
                     }
                     else
                     {
-                        ifCommands.Add(line); // Accumulate if commands
+                        ifCommands.Add(line); // Store commands inside if block
                     }
                 }
                 else if (trimmedLine.StartsWith("loop"))
