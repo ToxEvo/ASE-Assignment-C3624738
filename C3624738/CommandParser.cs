@@ -404,15 +404,10 @@ namespace C3624738
         }
 
         /// <summary>
-        /// Handles the parsing of a single line or multiple lines of syntax.
+        /// Handles the parsing and execution of a given line of syntax.
         /// </summary>
-        /// <remarks>
-        /// This method determines whether to parse a single command or multiple commands based on the input.
-        /// If the line is 'run', it parses multiple lines of syntax using the 'ParseMultiple' method.
-        /// Otherwise, it parses a single command using the 'ParseCommand' method.
-        /// </remarks>
-        /// <param name="line">The line of syntax to be parsed. If this is 'run', multiple lines of syntax will be parsed.</param>
-        /// <param name="syntax">The complete syntax to be parsed when 'run' is specified. Ignored for single line commands.</param>
+        /// <param name="line">The line of syntax to be parsed.</param>
+        /// <param name="syntax">The complete syntax to be parsed when 'run' or 'syntax' is specified.</param>
         public void ParseHandler(string line, string syntax)
         {
             if (line == "run")
@@ -436,8 +431,12 @@ namespace C3624738
             graphicsBox.Refresh();
         }
 
-
-        private List<string> CheckSyntax(string syntax)
+        /// <summary>
+        /// Checks the syntax of the provided script and returns a list of syntax errors.
+        /// </summary>
+        /// <param name="syntax">The script to check for syntax errors.</param>
+        /// <returns>A list of syntax error messages.</returns>
+        public List<string> CheckSyntax(string syntax)
         {
             var errors = new List<string>();
             var lines = syntax.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -454,6 +453,11 @@ namespace C3624738
             return errors;
         }
 
+        /// <summary>
+        /// Provides a correct usage example for a given command.
+        /// </summary>
+        /// <param name="command">The command for which to provide usage example.</param>
+        /// <returns>A string containing an example of correct usage.</returns>
         private string GetCorrectUsageExample(string command)
         {
             var commandType = command.Split(' ')[0].ToLower();
@@ -488,6 +492,11 @@ namespace C3624738
             }
         }
 
+        /// <summary>
+        /// Validates if the provided command is syntactically correct.
+        /// </summary>
+        /// <param name="command">The command to validate.</param>
+        /// <returns>True if the command is valid, otherwise false.</returns>
         private bool IsValidCommand(string command)
         {
             // Example: Check if the command is empty
@@ -520,6 +529,11 @@ namespace C3624738
             }
         }
 
+        /// <summary>
+        /// Validates the specifics of a command based on its type.
+        /// </summary>
+        /// <param name="parts">The parts of the command split into an array.</param>
+        /// <returns>True if the specific command is valid, otherwise false.</returns>
         private bool ValidateSpecificCommand(string[] parts)
         {
             switch (parts[0].ToLower())
