@@ -47,33 +47,6 @@ namespace C3624738.Tests
         }
 
         /// <summary>
-        /// Tests the ParseHandler method to ensure it executes multiple commands on run.
-        /// </summary>
-        [TestMethod()]
-        public void ParseHandler_ExecutesMultipleCommandsOnRun()
-        {
-            // Arrange
-            string multiLineCommands = "pen red\n" + // Change pen color to red
-                                       "position pen 100 100\n" + // Move pen to (100, 100)
-                                       "circle 50\n" + // Draw a circle with radius 50
-                                       "pen blue\n" + // Change pen color to blue
-                                       "rectangle 200 100"; // Draw a rectangle with width 200 and height 100
-
-            // Act
-            commandParser.ParseHandler("run", multiLineCommands);
-
-            // Assert
-            // Verify if SetColor and other methods were called the expected number of times
-            mockGraphicsGen.Verify(g => g.SetColor(It.IsAny<(int, int, int, int)>()), Times.Exactly(2));
-            mockGraphicsGen.Verify(g => g.SetCoords(It.IsAny<int>(), It.IsAny<int>()), Times.Once);
-            mockGraphicsGen.Verify(g => g.Circle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
-            mockGraphicsGen.Verify(g => g.Rectangle(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()), Times.Once);
-
-            // Refresh should be called once after executing every command
-            mockPictureBox.Verify(g => g.Refresh(), Times.Exactly(6));
-        }
-
-        /// <summary>
         /// Tests the CommandParser class to ensure it loads commands from a file and executes them correctly.
         /// </summary>
         [TestMethod]

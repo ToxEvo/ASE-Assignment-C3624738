@@ -728,6 +728,16 @@ namespace C3624738
             return Convert.ToBoolean(EvaluateExpression(condition));
         }
 
+        /// <summary>
+        /// Safely updates the UI from potentially non-UI threads.
+        /// </summary>
+        /// <param name="action">The action to be performed on the UI thread.</param>
+        /// <remarks>
+        /// This method checks if the call is made from a thread other than the one that created the graphicsBox control.
+        /// If so, it uses Invoke to marshal the call to the UI thread.
+        /// Otherwise, it executes the action directly.
+        /// This ensures thread-safe operations on Windows Forms controls.
+        /// </remarks>
         private void SafeUIUpdate(Action updateAction)
         {
             if (graphicsBox.InvokeRequired)
