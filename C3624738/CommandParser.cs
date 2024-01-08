@@ -419,12 +419,162 @@ namespace C3624738
             {
                 ParseMultiple(syntax);
             }
+            else if (line == "syntax")
+            {
+                var errors = CheckSyntax(syntax);
+                if (errors.Count > 0)
+                {
+                    // Each error message is separated by two new lines for clearer separation
+                    string allErrors = string.Join("\n\n", errors);
+                    MessageBox.Show(allErrors, "Syntax Errors", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
             else
             {
                 ParseCommand(line.Trim());
             }
             graphicsBox.Refresh();
         }
+
+
+        private List<string> CheckSyntax(string syntax)
+        {
+            var errors = new List<string>();
+            var lines = syntax.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var line = lines[i].Trim();
+                if (!IsValidCommand(line))
+                {
+                    errors.Add($"Syntax error on line {i + 1}: '{line}' is not a valid command. Correct usage: " + GetCorrectUsageExample(line));
+                }
+            }
+
+            return errors;
+        }
+
+        private string GetCorrectUsageExample(string command)
+        {
+            var commandType = command.Split(' ')[0].ToLower();
+            switch (commandType)
+            {
+                case "pen":
+                    return "'pen red' or 'pen draw 10 20'";
+                case "circle":
+                    return "'circle 10'";
+                case "rectangle":
+                    return "'rectangle 10 20'";
+                case "clear":
+                    return "'clear'";
+                case "fill":
+                    return "'fill on' or 'fill off'";
+                case "position":
+                    return "'position pen 10 20'";
+                case "reset":
+                    return "'reset'";
+                case "save":
+                    return "'save filepath filename'";
+                case "load":
+                    return "'load filepath filename'";
+                case "method":
+                    return "'method methodName (param1 param2) ... endmethod'";
+                case "if":
+                    return "'if condition ... endif'";
+                case "loop":
+                    return "'loop 5 ... endloop'";
+                default:
+                    return "No example available";
+            }
+        }
+
+        private bool IsValidCommand(string command)
+        {
+            // Example: Check if the command is empty
+            if (string.IsNullOrWhiteSpace(command))
+            {
+                return false;
+            }
+
+            // Split the command into parts
+            var parts = command.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Check if the command is recognized
+            switch (parts[0].ToLower())
+            {
+                case "pen":
+                case "circle":
+                case "rectangle":
+                case "clear":
+                case "fill":
+                case "position":
+                case "reset":
+                case "save":
+                case "load":
+                case "method":
+                case "if":
+                case "loop":
+                    return ValidateSpecificCommand(parts);
+                default:
+                    return false;
+            }
+        }
+
+        private bool ValidateSpecificCommand(string[] parts)
+        {
+            switch (parts[0].ToLower())
+            {
+                case "pen":
+                    // Validate pen command
+                    return (parts.Length == 2 && colors.ContainsKey(parts[1])) ||
+                           (parts.Length == 4 && parts[1].ToLower() == "draw" && int.TryParse(parts[2], out _) && int.TryParse(parts[3], out _));
+
+                case "circle":
+                    // Validate circle command
+                    return parts.Length == 2 && int.TryParse(parts[1], out _);
+
+                case "rectangle":
+                    // Validate rectangle command
+                    return parts.Length == 3 && int.TryParse(parts[1], out _) && int.TryParse(parts[2], out _);
+
+                case "clear":
+                    // Validate clear command
+                    return parts.Length == 1;
+
+                case "fill":
+                    // Validate fill command
+                    return parts.Length == 2 && (parts[1].ToLower() == "on" || parts[1].ToLower() == "off");
+
+                case "position":
+                    // Validate position command
+                    return parts.Length == 4 && parts[1].ToLower() == "pen" && int.TryParse(parts[2], out _) && int.TryParse(parts[3], out _);
+
+                case "reset":
+                    // Validate reset command
+                    return parts.Length == 1;
+
+                case "save":
+                case "load":
+                    // Validate save and load commands
+                    return parts.Length == 3;
+
+                case "method":
+                    // Validate method command
+                    return parts.Length >= 2;
+
+                case "if":
+                    // Validate if command
+                    return parts.Length >= 2;
+
+                case "loop":
+                    // Validate loop command
+                    return parts.Length >= 2;
+
+                default:
+                    return false;
+            }
+        }
+
 
         /// <summary>
         /// Parses multiple commands based on the given syntax.
