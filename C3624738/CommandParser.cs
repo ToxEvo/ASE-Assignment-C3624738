@@ -209,6 +209,7 @@ namespace C3624738
             foreach (var cmd in method.Commands)
             {
                 ParseCommand(cmd);
+                graphicsBox.Refresh();
             }
 
             // Restore the original state of variables
@@ -293,8 +294,11 @@ namespace C3624738
             if (commands.Length != 2 || !int.TryParse(commands[1], out int radius))
                 throw new ArgumentException("Correct usage: 'circle radius'");
 
-            var coords = graphicsGen.GetCoords();
-            graphicsGen.Circle(coords.Item1, coords.Item2, radius);
+            SafeUIUpdate(() => {
+                var coords = graphicsGen.GetCoords();
+                graphicsGen.Circle(coords.Item1, coords.Item2, radius);
+                graphicsBox.Refresh();
+            });
         }
 
         /// <summary>
@@ -308,8 +312,11 @@ namespace C3624738
                 !int.TryParse(commands[2], out int height))
                 throw new ArgumentException("Correct usage: 'rectangle width height'");
 
-            var coords = graphicsGen.GetCoords();
-            graphicsGen.Rectangle(coords.Item1, coords.Item2, width, height);
+            SafeUIUpdate(() => {
+                var coords = graphicsGen.GetCoords();
+                graphicsGen.Rectangle(coords.Item1, coords.Item2, width, height);
+                graphicsBox.Refresh();
+            });
         }
 
         /// <summary>
@@ -320,7 +327,11 @@ namespace C3624738
         {
             if (commands.Length > 1)
                 throw new ArgumentException("Correct usage: 'clear'");
-            graphicsGen.Clear();
+
+            SafeUIUpdate(() => {
+                graphicsGen.Clear();
+                graphicsBox.Refresh();
+            });
         }
 
         /// <summary>
@@ -617,6 +628,7 @@ namespace C3624738
                             foreach (var cmd in loopCommands)
                             {
                                 ParseCommand(cmd); // Execute each command in the loop
+                                graphicsBox.Refresh();
                             }
                         }
                         loopCommands.Clear();
@@ -636,6 +648,7 @@ namespace C3624738
                             foreach (var cmd in ifCommands)
                             {
                                 ParseCommand(cmd); // Execute each command in the if block
+                                graphicsBox.Refresh();
                             }
                         }
                         ifCommands.Clear();
@@ -657,10 +670,11 @@ namespace C3624738
                 }
                 else
                 {
-                    ParseCommand(trimmedLine); // Execute non-loop, non-if commands
+                    SafeUIUpdate(() => {
+                        ParseCommand(trimmedLine);
+                        graphicsBox.Refresh();
+                    });
                 }
-
-                graphicsBox.Refresh();
             }
         }
 
@@ -713,6 +727,19 @@ namespace C3624738
         {
             return Convert.ToBoolean(EvaluateExpression(condition));
         }
+
+        private void SafeUIUpdate(Action updateAction)
+        {
+            if (graphicsBox.InvokeRequired)
+            {
+                graphicsBox.Invoke(updateAction);
+            }
+            else
+            {
+                updateAction();
+            }
+        }
+
 
     }
 }

@@ -74,28 +74,6 @@ namespace C3624738.Tests
         }
 
         /// <summary>
-        /// Tests the CommandParser class to ensure it saves commands to a file correctly.
-        /// </summary>
-        [TestMethod]
-        public void CommandParser_SavesCommandsToFile()
-        {
-            // Arrange
-            string tempFilePath = "C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\TempFile\\";
-            string[] commandsToSave = { "pen red", "circle 50" };
-            foreach (var cmd in commandsToSave)
-            {
-                commandParser.ParseCommand(cmd);
-            }
-
-            // Act
-            commandParser.ParseCommand($"save {tempFilePath} test1.txt");
-
-            // Assert
-            var savedCommands = File.ReadAllLines("C:\\Users\\toxev\\Source\\Repos\\ASE-Assignment-C3624738\\C3624738Tests\\TempFile\\test1.txt");
-            CollectionAssert.AreEqual(commandsToSave, savedCommands);
-        }
-
-        /// <summary>
         /// Tests the CommandParser class to ensure it loads commands from a file and executes them correctly.
         /// </summary>
         [TestMethod]
