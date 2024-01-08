@@ -634,14 +634,16 @@ namespace C3624738
                             }
                         }
                         loopCommands.Clear();
+                        loopCount = 0; // Reset loop count
                     }
                     else
                     {
                         loopCommands.Add(line);
                     }
                 }
-                if (inIf)
+                else if (inIf)
                 {
+                    // Handle if blocks similarly to loops
                     if (trimmedLine == "endif")
                     {
                         inIf = false;
@@ -678,6 +680,7 @@ namespace C3624738
                 }
             }
         }
+
 
 
         /// <summary>
