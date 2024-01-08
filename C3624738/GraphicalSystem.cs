@@ -89,8 +89,14 @@ namespace C3624738
         protected bool fill;
         protected (int x, int y) penCoords;
 
+        /// <summary>
+        /// Event triggered when the graphical content is updated.
+        /// </summary>
         public event Action GraphicsUpdated;
 
+        /// <summary>
+        /// Method to invoke the <see cref="GraphicsUpdated"/> event.
+        /// </summary>
         protected void OnGraphicsUpdated()
         {
             GraphicsUpdated?.Invoke();
