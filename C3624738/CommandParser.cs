@@ -625,17 +625,17 @@ namespace C3624738
                         inLoop = false;
                         for (int i = 0; i < loopCount; i++)
                         {
-                            foreach (var cmd in loopCommands)
+                            foreach (var loopCommand in loopCommands)
                             {
-                                ParseCommand(cmd); // Execute each command in the loop
-                                graphicsBox.Refresh();
+                                // Re-evaluate expressions for each iteration
+                                ParseCommand(loopCommand);
                             }
                         }
                         loopCommands.Clear();
                     }
                     else
                     {
-                        loopCommands.Add(line); // Accumulate loop commands
+                        loopCommands.Add(line);
                     }
                 }
                 else if (inIf)
