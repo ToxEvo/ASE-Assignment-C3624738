@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace C3624738.Tests
 {
+    /// <summary>
+    /// Class to test the syntax of the command parser syntax checking command.
+    /// </summary>
     [TestClass]
     public class CommandParserSyntaxTests
     {
@@ -21,6 +24,9 @@ namespace C3624738.Tests
             commandParser = new CommandParser(mockGraphicsGen.Object, mockPictureBox.Object);
         }
 
+        /// <summary>
+        /// Test to check syntax for an incorrect command.
+        /// </summary>
         [TestMethod]
         public void CheckSyntax_IncorrectCommand_ShouldDetectSyntaxError()
         {
@@ -30,6 +36,9 @@ namespace C3624738.Tests
             Assert.IsTrue(errors.Any(error => error.Contains("circl")), "Expected specific syntax error message not found.");
         }
 
+        /// <summary>
+        /// Test to check syntax for a correct command.
+        /// </summary>
         [TestMethod]
         public void CheckSyntax_CorrectCommand_ShouldNotReportError()
         {
@@ -38,6 +47,9 @@ namespace C3624738.Tests
             Assert.IsTrue(errors.Count == 0, "Unexpected syntax errors were detected.");
         }
 
+        /// <summary>
+        /// Test to check syntax for multiple commands.
+        /// </summary>
         [TestMethod]
         public void CheckSyntax_MultipleCommands_ShouldDetectErrorsCorrectly()
         {
